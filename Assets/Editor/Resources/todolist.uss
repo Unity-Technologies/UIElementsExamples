@@ -1,0 +1,22 @@
+TextField {
+    height:16;
+}
+
+ScrollView {
+    flex:1;
+}
+
+.task {
+    flex-direction: row;
+    justify-content: space-between;
+    align-self: stretch;
+    width: 430px;
+}
+
+.task:hover {
+    background-color: #222;
+}
+
+#checkbox:checked {
+    opacity: 0.5;
+}
