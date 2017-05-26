@@ -145,7 +145,6 @@ namespace UIElementsExamples
             if(label2Toggle.on)
                 labelGeometry2.translate = new Vector3(0,value,0);
         }
-		
         void RotationChanged(float value)
         {
             rotationLabel.text = "Rotation value: " + (int)value;
@@ -163,7 +162,6 @@ namespace UIElementsExamples
             if (label2Toggle.on)
                 labelGeometry2.rotation = Quaternion.Euler(0, 0, value);
         }
-		
         void ScaleChanged(float value)
         {
             scaleLabel.text = "Scale value: " + value;
