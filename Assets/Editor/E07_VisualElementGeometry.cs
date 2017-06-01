@@ -10,10 +10,10 @@ namespace UIElementsExamples
 {
     public class E07_VisualElementGeometry : EditorWindow
     {
-        float lowTranslate;
-        float highTranslate;
-        Slider translateSlider;
-        Label translateLabel;
+        float lowPosition;
+        float highPosition;
+        Slider positionSlider;
+        Label positionLabel;
 
         float lowRotation;
         float highRotation;
@@ -47,8 +47,8 @@ namespace UIElementsExamples
 
         protected void OnEnable()
         {
-            lowTranslate = 0;
-            highTranslate = 100;
+            lowPosition = 0;
+            highPosition = 100;
             lowRotation = 0;
             highRotation = 360;
             lowScale = 0.5f;
@@ -58,14 +58,14 @@ namespace UIElementsExamples
 
             var optionsContainer = new VisualContainer() { name = "OptionsContainer" };
             {
-                var translateContainer = new VisualContainer() { name = "TranslateContainer" };
+                var positionContainer = new VisualContainer() { name = "PositionContainer" };
                 {
-                    translateLabel = new Label("Translate value: ") { name = "TestTranslateLabel" };
-                    translateContainer.AddChild(translateLabel);
-                    translateSlider = new Slider(lowTranslate, highTranslate, TranslateChanged);
-                    translateContainer.AddChild(translateSlider);
+                    positionLabel = new Label("Position value: ") { name = "TestPositionLabel" };
+                    positionContainer.AddChild(positionLabel);
+                    positionSlider = new Slider(lowPosition, highPosition, PositionChanged);
+                    positionContainer.AddChild(positionSlider);
                 }
-                optionsContainer.AddChild(translateContainer);
+                optionsContainer.AddChild(positionContainer);
 
                 var rotationContainer = new VisualContainer() { name = "RotationContainer" };
                 {
@@ -129,21 +129,21 @@ namespace UIElementsExamples
             rootVisualContainer.AddChild(elementsContainer2);
         }
 
-        void TranslateChanged(float value)
+        void PositionChanged(float value)
         {
-            translateLabel.text = "Translate value: " + (int)value;
-            translateLabel.Dirty(ChangeType.Styles);
+            positionLabel.text = "Position value: " + (int)value;
+            positionLabel.Dirty(ChangeType.Styles);
 
             if(buttonToggle.on)
-                buttonGeometry.translate = new Vector3(value,0,0);
+                buttonGeometry.position = new Vector3(value,0,0);
             if(labelToggle.on)
-                labelGeometry.translate = new Vector3(value,0,0);
+                labelGeometry.position = new Vector3(value,0,0);
             if(textFieldToggle.on)
-                textFieldGeometry.translate = new Vector3(value,0,0);
+                textFieldGeometry.position = new Vector3(value,0,0);
             if(button2Toggle.on)
-                buttonGeometry2.translate = new Vector3(0,value,0);
+                buttonGeometry2.position = new Vector3(0,value,0);
             if(label2Toggle.on)
-                labelGeometry2.translate = new Vector3(0,value,0);
+                labelGeometry2.position = new Vector3(0,value,0);
         }
         void RotationChanged(float value)
         {
