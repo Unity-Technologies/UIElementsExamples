@@ -37,7 +37,7 @@ namespace UIElementsExamples
 
             // The most basic way to place an element is to assign its rect
             // although you should prefer layout in most cases
-            boxes.position = new Rect(
+            boxes.layout = new Rect(
                 kMargin,
                 kMargin,
                 kPadding * 2 + kBoxSize * m_Colors.Length,
@@ -58,7 +58,7 @@ namespace UIElementsExamples
                 // position rects are relative to the parent rect
                 boxes.AddChild(new VisualElement()
                 {
-                    position = new Rect(kPadding + i * kBoxSize, kPadding, kBoxSize, kBoxSize),
+                    layout = new Rect(kPadding + i * kBoxSize, kPadding, kBoxSize, kBoxSize),
                     backgroundColor = c
                 });
             }
