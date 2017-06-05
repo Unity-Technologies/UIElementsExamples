@@ -62,66 +62,6 @@ namespace UIElementsExamples
                     backgroundColor = c
                 });
             }
-
-            boxes.AddChild(new Selector() { width = 100, height = 100 });
-        }
-    }
-
-    public class Selector : VisualElement
-    {
-        Color m_SelectionColor = Color.red;
-        bool m_IsScheduled;
-        float m_Sign = 1f;
-        const float kDelta = .05f;
-        const float kMinAlpha = .2f;
-        const float kMaxAlpha = 1f;
-
-        const long kInterval = 10;
-
-        public Selector()
-        {
-            name = "Selector";
-
-            onEnter += SchedulColorCycling;
-            onLeave += UnscheduleColorCycling;
-        }
-
-        private void SchedulColorCycling()
-        {
-            if (panel != null)
-            {
-                if (!m_IsScheduled)
-                {
-                    this.Schedule(CycleColor).StartingIn(0).Every(kInterval);
-                    m_IsScheduled = true;
-                }
-            }
-            else
-            {
-                m_IsScheduled = false;
-            }
-        }
-
-        private void UnscheduleColorCycling()
-        {
-            if (m_IsScheduled && panel != null)
-            {
-                this.Unschedule(CycleColor);
-            }
-            m_IsScheduled = false;
-        }
-
-        private void CycleColor(TimerState timerState)
-        {
-            Debug.Log("dirty");
-            Dirty(ChangeType.Repaint);
-        }
-
-        public override void DoRepaint()
-        {
-            base.DoRepaint();
-
-            Debug.Log("repaint");
         }
     }
 }
