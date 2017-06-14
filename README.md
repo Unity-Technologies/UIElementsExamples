@@ -13,3 +13,4 @@ Please refer to the [Documentation preview document](https://docs.google.com/a/u
 4. [Events](Assets/Editor/E04_Events.cs)
 5. [Controls](Assets/Editor/E05_Controls.cs)
 6. [IMGUI support](Assets/Editor/E06_IMGUISupport.cs)
+7. [VisualElement transform](Assets/Editor/E07_VisualElementTransform.cs)
