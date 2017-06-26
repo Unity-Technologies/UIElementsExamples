@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 11995, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: uielementssettings
+  m_EditorClassIdentifier: 
+  viewTable:
+  - id: TreeView
+    viewNamespace: 
+    template: {fileID: 11400000, guid: f05a1e0d273c94b1db91b227901e714f, type: 3}

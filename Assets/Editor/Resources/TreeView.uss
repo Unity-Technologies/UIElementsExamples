@@ -1,0 +1,32 @@
+#TitleContainer {
+	flex-direction: row;
+}
+
+#ChildrenContainer {
+	padding-left: 20px;
+}
+
+#TitleContainer > Toggle {
+	background-image: resource("Builtin Skins/DarkSkin/Images/IN foldout.png");
+}
+
+#TitleContainer > Toggle:focus, #TitleContainer Toggle:focus:active {
+	background-image: resource("Builtin Skins/DarkSkin/Images/IN foldout focus.png");
+}
+
+#TitleContainer > Toggle:active {
+	background-image: resource("Builtin Skins/DarkSkin/Images/IN foldout act.png");
+}
+
+#TitleContainer > Toggle:checked {
+	background-image: resource("Builtin Skins/DarkSkin/Images/IN foldout on.png");
+}
+
+#TitleContainer > Toggle:checked:focus {
+	background-image: resource("Builtin Skins/DarkSkin/Images/IN foldout focus on.png");
+}
+
+#TitleContainer > Toggle:checked:active:focus, #TitleContainer > Toggle:checked:active {
+	background-image: resource("Builtin Skins/DarkSkin/Images/IN foldout act on.png");
+}
+
