@@ -1,0 +1,9 @@
+<Template id="TreeView" xmlns="UnityEngine.Experimental.UIElements">
+	<VisualContainer class="TreeView">
+		<VisualContainer name="TitleContainer">
+			<Toggle />
+			<Label text="Hello" />
+		</VisualContainer>
+		<VisualContainer name="ChildrenContainer" />
+	</VisualContainer>
+</Template>
