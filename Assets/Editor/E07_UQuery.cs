@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Experimental.UIElements;
 using UnityEditor.Experimental.UIElements;
 using UnityEngine.Experimental.UIElements.StyleEnums;
- 
+
 namespace UIElementsExamples
 {
     public class E07_UQuery : EditorWindow
@@ -50,7 +50,7 @@ namespace UIElementsExamples
             root.AddStyleSheetPath("styles");
 
             // Here we just take all layout properties and other to extract them in USS!
-            var boxes = new VisualContainer() {name = "boxesContainer"};
+            var boxes = new VisualContainer() { name = "boxesContainer" };
             boxes.AddToClassList("horizontalContainer");
             root.AddChild(boxes);
 
@@ -66,13 +66,13 @@ namespace UIElementsExamples
             }
 
             // Some more advanced layout now!
-            var twoPlusOneContainer = new VisualContainer() {name = "2Plus1Container"};
+            var twoPlusOneContainer = new VisualContainer() { name = "2Plus1Container" };
             twoPlusOneContainer.AddToClassList("horizontalContainer");
             root.AddChild(twoPlusOneContainer);
-            twoPlusOneContainer.AddChild(new Label() {name = "large", text="large"});
-            twoPlusOneContainer.AddChild(new Label() {name = "small", text = "small" });
+            twoPlusOneContainer.AddChild(new Label() { name = "large", text = "large" });
+            twoPlusOneContainer.AddChild(new Label() { name = "small", text = "small" });
 
-            var wrapContainer = new VisualContainer() {name = "wrapContainer"};
+            var wrapContainer = new VisualContainer() { name = "wrapContainer" };
             wrapContainer.AddToClassList("horizontalContainer");
             root.AddChild(wrapContainer);
 
@@ -84,9 +84,9 @@ namespace UIElementsExamples
 
         void ConnectUIEvents()
         {
-			// We'll use UQuery to register click events. 
-			// For this demo, clicking on an element will randomize its color
-			
+            // We'll use UQuery to register click events. 
+            // For this demo, clicking on an element will randomize its color
+
             var root = this.GetRootVisualContainer();
 
             // first build a query to get the children of the top container
@@ -100,13 +100,11 @@ namespace UIElementsExamples
             //one-liner approach for the wrap section
             root.Query("wrapContainer").Children<VisualElement>().ForEach(RegisterDefaultOnClick);
 
-
             //we get the first single object of a specific type
-			// using the Q shortcut notation
+            // using the Q shortcut notation
             var left = root.Q<Label>();
             left.text = "Randomize All";
             left.AddManipulator(new Clickable(RandomizeAllElements));
-            ;
 
             // we get the last object, no shortcut here
             // clicking this last label will trigger the WhereDemo below
@@ -120,7 +118,7 @@ namespace UIElementsExamples
             var click = new Clickable(() => RandomizeElementColor(e));
             e.AddManipulator(click);
         }
-		
+
         private void RandomizeElementColor(VisualElement e)
         {
             if (e != null)
