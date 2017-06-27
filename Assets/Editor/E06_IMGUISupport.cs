@@ -28,9 +28,9 @@ namespace UIElementsExamples
             // IMGUIContainer class lets you wrap OnGUI() function in containers
             // You can use UIElements layout to arrange them, and GUILayout inside them
             var root = this.GetRootVisualContainer();
-            root.flexDirection = FlexDirection.Row;
-            root.AddChild(new IMGUIContainer(OnGUILeft) { width = 200 });
-            root.AddChild(new IMGUIContainer(OnGUIRight) { flex = 1.0f });
+            root.style.flexDirection = FlexDirection.Row;
+            root.AddChild(new IMGUIContainer(OnGUILeft) { style = { width = 200 } });
+            root.AddChild(new IMGUIContainer(OnGUIRight) { style = { flex = 1.0f } });
         }
 
         void OnGUILeft()
