@@ -46,7 +46,7 @@ namespace UIElementsExamples
 
             // The VisualTree is painted back-to-front following depth first traversal
             // thus a parent paints before its children
-            boxes.backgroundColor = Color.grey;
+            boxes.style.backgroundColor = Color.grey;
 
             // A VisualContainer will clip its descendants outside of its own
             // rect based on this property
@@ -59,7 +59,7 @@ namespace UIElementsExamples
                 boxes.AddChild(new VisualElement()
                 {
                     layout = new Rect(kPadding + i * kBoxSize, kPadding, kBoxSize, kBoxSize),
-                    backgroundColor = c
+                    style = { backgroundColor = c }
                 });
             }
         }
