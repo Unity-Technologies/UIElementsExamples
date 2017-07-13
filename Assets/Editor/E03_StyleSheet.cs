@@ -40,7 +40,9 @@ namespace UIElementsExamples
                 // inform layout system of desired width for each box
                 boxes.AddChild(new VisualElement()
                 {
-                    backgroundColor = c
+                    style = {
+                        backgroundColor = c
+                    }
                 });
             }
 
