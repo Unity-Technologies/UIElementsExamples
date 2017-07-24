@@ -17,6 +17,10 @@ ScrollView {
     background-color: #222;
 }
 
+.task:focus {
+	background-color: #229;
+}
+
 #checkbox:checked {
     opacity: 0.5;
 }

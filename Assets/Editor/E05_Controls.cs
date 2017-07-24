@@ -22,6 +22,15 @@ namespace UIElementsExamples
         TextField m_TextField;
         ScrollView m_TasksContainer;
 
+        public void AddTaskOnReturnKey(KeyDownEvent e)
+        {
+            if (e.keyCode == KeyCode.Return)
+            {
+                AddTask();
+                // Prevent the text field from handling this key.
+                e.StopPropagation();
+            }
+        }
 
         public void OnEnable()
         {
@@ -30,6 +39,7 @@ namespace UIElementsExamples
 
             m_TextField = new TextField() { name = "input" };
             root.AddChild(m_TextField);
+            m_TextField.RegisterCallback<KeyDownEvent>(AddTaskOnReturnKey);
 
             var button = new Button(AddTask) { text = "Save task" };
             root.AddChild(button);
@@ -47,11 +57,25 @@ namespace UIElementsExamples
             }
         }
 
+        public void DeleteTask(KeyDownEvent e, VisualContainer task)
+        {
+            if (e.keyCode == KeyCode.Delete)
+            {
+                if (task != null)
+                {
+                    task.parent.RemoveChild(task);
+                }
+            }
+        }
+
         public VisualContainer CreateTask(string name)
         {
             var task = new VisualContainer();
+            task.focusIndex = 0;
             task.name = name;
             task.AddToClassList("task");
+
+            task.RegisterCallback<KeyDownEvent, VisualContainer>(DeleteTask, task);
 
             var taskName = new Toggle(() => {}) { text = name, name = "checkbox" };
             task.AddChild(taskName);
@@ -77,6 +101,9 @@ namespace UIElementsExamples
             {
                 m_TasksContainer.contentView.AddChild(CreateTask(m_TextField.text));
                 m_TextField.text = "";
+
+                // Give focus back to text field.
+                m_TasksContainer.focusController.SwitchFocus(m_TextField);
             }
         }
 
