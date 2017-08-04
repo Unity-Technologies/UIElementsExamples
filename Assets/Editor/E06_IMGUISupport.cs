@@ -23,8 +23,6 @@ namespace UIElementsExamples
         bool myBool = true;
         float myFloat = 1.23f;
 
-        IMGUIContainer m_RightContainer;
-
         public void OnEnable()
         {
             // IMGUIContainer class lets you wrap OnGUI() function in containers
@@ -32,14 +30,7 @@ namespace UIElementsExamples
             var root = this.GetRootVisualContainer();
             root.style.flexDirection = FlexDirection.Row;
             root.AddChild(new IMGUIContainer(OnGUILeft) { style = { width = 200 } });
-            m_RightContainer = new IMGUIContainer(OnGUIRight) {
-                style = {
-                    flex = 1.0f,
-                    backgroundColor = EditorGUIUtility.isProSkin ? new Color(0.22f, 0.22f, 0.22f, 1) : new Color(0.76f, 0.76f, 0.76f, 1)
-                },
-                usePixelCaching = true
-            };
-            root.AddChild(m_RightContainer);
+            root.AddChild(new IMGUIContainer(OnGUIRight) { style = { flex = 1.0f } });
         }
 
         void OnGUILeft()
@@ -70,8 +61,6 @@ namespace UIElementsExamples
 
         void OnGUIRight()
         {
-            m_RightContainer.usePixelCaching = EditorGUILayout.Toggle("Use pixel caching", m_RightContainer.usePixelCaching);
-
             GUILayout.Label ("Base Settings", EditorStyles.boldLabel);
             myString = EditorGUILayout.TextField ("Text Field", myString);
             
