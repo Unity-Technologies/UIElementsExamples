@@ -1,10 +1,12 @@
 # UIElementsExamples
 Unity project containing examples to use UIElements in the Editor
 
-This project is compatible with Unity 2017.2 (currently in alpha).
-Please use the 2017.1.0b7 tag for this project to work with the previous Unity release.
+This project is compatible with Unity 2017.3 (currently in alpha).
+Please use the 2017.2 branch for this project to work with the previous Unity release.
 
-Please refer to the [Documentation preview document](https://docs.google.com/a/unity3d.com/document/d/1ZmtPhJqridaJuzoMJUtBlDq26uHHopdF8M1v6H9McTo/edit?usp=sharing) to learn what UIElements is all about.
+Please refer to the [Documentation preview document](
+https://docs.google.com/a/unity3d.com/document/d/186aHiyAuYezcXtu3y_xpygjxDf5OAD79VOlH7sEDxNg/edit?usp=sharing
+) to learn what UIElements is all about.
 
 ## Examples
 
