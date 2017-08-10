@@ -103,7 +103,7 @@ namespace UIElementsExamples
                 m_TextField.text = "";
 
                 // Give focus back to text field.
-                m_TasksContainer.focusController.SwitchFocus(m_TextField);
+                m_TextField.Focus();
             }
         }
 
