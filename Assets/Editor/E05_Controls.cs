@@ -37,7 +37,7 @@ namespace UIElementsExamples
             var root = this.GetRootVisualContainer();
             root.AddStyleSheetPath("todolist");
 
-            m_TextField = new TextField() { name = "input" };
+            m_TextField = new TextField() { name = "input", persistenceKey = "input" };
             root.Add(m_TextField);
             m_TextField.RegisterCallback<KeyDownEvent>(AddTaskOnReturnKey);
 
