@@ -28,12 +28,12 @@ namespace UIElementsExamples
         public void OnEnable()
         {
             // Each editor window contains a root VisualContainer object
-            VisualContainer root = this.GetRootVisualContainer();
+            VisualElement root = this.GetRootVisualContainer();
 
             // VisualContainer objects can contain VisualElement objects,
             // which is the base class for VisualContainer and other controls
             VisualContainer boxes = new VisualContainer();
-            root.AddChild(boxes);
+            root.Add(boxes);
 
             // The most basic way to place an element is to assign its rect
             // although you should prefer layout in most cases
@@ -56,7 +56,7 @@ namespace UIElementsExamples
             {
                 Color c = m_Colors[i];
                 // position rects are relative to the parent rect
-                boxes.AddChild(new VisualElement()
+                boxes.Add(new VisualElement()
                 {
                     layout = new Rect(kPadding + i * kBoxSize, kPadding, kBoxSize, kBoxSize),
                     style = { backgroundColor = c }

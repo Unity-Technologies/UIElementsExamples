@@ -19,7 +19,7 @@ namespace UIElementsExamples
         {
             var root = this.GetRootVisualContainer();
             root.AddManipulator(new MouseEventLogger());
-            root.AddChild(new VisualElement() { style = { backgroundColor = Color.red }, text = "Click me"});
+            root.Add(new VisualElement() { style = { backgroundColor = Color.red }, text = "Click me"});
         }
 
         class MouseEventLogger : Manipulator
@@ -27,22 +27,27 @@ namespace UIElementsExamples
             protected override void RegisterCallbacksOnTarget()
             {
                 // By default you handle events after children
-                target.RegisterCallback<MouseUpEvent>(OnMouseEvent);
-                target.RegisterCallback<MouseDownEvent>(OnMouseEvent);
+                target.RegisterCallback<MouseUpEvent>(OnMouseUpEvent);
+                target.RegisterCallback<MouseDownEvent>(OnMouseDownEvent);
                 // Capture phase lets you handle events before children
-                target.RegisterCallback<MouseUpEvent>(OnMouseEvent, Capture.Capture);
-                target.RegisterCallback<MouseDownEvent>(OnMouseEvent, Capture.Capture);
+                target.RegisterCallback<MouseUpEvent>(OnMouseUpEvent, Capture.Capture);
+                target.RegisterCallback<MouseDownEvent>(OnMouseDownEvent, Capture.Capture);
             }
 
             protected override void UnregisterCallbacksFromTarget()
             {
-                target.UnregisterCallback<MouseUpEvent>(OnMouseEvent);
-                target.UnregisterCallback<MouseDownEvent>(OnMouseEvent);
-                target.UnregisterCallback<MouseUpEvent>(OnMouseEvent, Capture.Capture);
-                target.UnregisterCallback<MouseDownEvent>(OnMouseEvent, Capture.Capture);
+                target.UnregisterCallback<MouseUpEvent>(OnMouseUpEvent);
+                target.UnregisterCallback<MouseDownEvent>(OnMouseDownEvent);
+                target.UnregisterCallback<MouseUpEvent>(OnMouseUpEvent, Capture.Capture);
+                target.UnregisterCallback<MouseDownEvent>(OnMouseDownEvent, Capture.Capture);
             }
 
-            void OnMouseEvent(MouseEventBase evt)
+            void OnMouseUpEvent(MouseEventBase<MouseUpEvent> evt)
+            {
+                Debug.Log("Receiving " + evt + " in " + evt.propagationPhase + " for target " + evt.target);
+            }
+
+            void OnMouseDownEvent(MouseEventBase<MouseDownEvent> evt)
             {
                 Debug.Log("Receiving " + evt + " in " + evt.propagationPhase + " for target " + evt.target);
             }

@@ -31,14 +31,14 @@ namespace UIElementsExamples
             // Here we just take all layout properties and other to extract them in USS!
             var boxes = new VisualContainer() { name = "boxesContainer" };
             boxes.AddToClassList("horizontalContainer");
-            root.AddChild(boxes);
+            root.Add(boxes);
 
             for (int i = 0; i < m_Colors.Length; i++)
             {
                 Color c = m_Colors[i];
 
                 // inform layout system of desired width for each box
-                boxes.AddChild(new VisualElement()
+                boxes.Add(new VisualElement()
                 {
                     style = {
                         backgroundColor = c
@@ -49,17 +49,17 @@ namespace UIElementsExamples
             // Some more advanced layout now!
             var twoPlusOneContainer = new VisualContainer() { name = "2Plus1Container" };
             twoPlusOneContainer.AddToClassList("horizontalContainer");
-            root.AddChild(twoPlusOneContainer);
-            twoPlusOneContainer.AddChild(new VisualElement() { name = "large" });
-            twoPlusOneContainer.AddChild(new VisualElement() { name = "small" });
+            root.Add(twoPlusOneContainer);
+            twoPlusOneContainer.Add(new VisualElement() { name = "large" });
+            twoPlusOneContainer.Add(new VisualElement() { name = "small" });
 
             var wrapContainer = new VisualContainer() { name = "wrapContainer" };
             wrapContainer.AddToClassList("horizontalContainer");
-            root.AddChild(wrapContainer);
+            root.Add(wrapContainer);
 
             for (int i = 0; i < 20; i++)
             {
-                wrapContainer.AddChild(new VisualElement());
+                wrapContainer.Add(new VisualElement());
             }
         }
     }

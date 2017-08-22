@@ -51,14 +51,14 @@ namespace UIElementsExamples
                     flexDirection = FlexDirection.Row // makes the container horizontal
 		        }
             };
-            root.AddChild(boxes);
+            root.Add(boxes);
             
             for (int i = 0; i < m_Colors.Length; i++)
             {
                 Color c = m_Colors[i];
 
                 // inform layout system of desired width for each box
-                boxes.AddChild(new VisualElement()
+                boxes.Add(new VisualElement()
                 {
                     style =
                     {
@@ -85,9 +85,9 @@ namespace UIElementsExamples
                     flexDirection = FlexDirection.Row
                 }  
             };
-            root.AddChild(twoPlusOneContainer);
+            root.Add(twoPlusOneContainer);
 
-            twoPlusOneContainer.AddChild(new VisualElement()
+            twoPlusOneContainer.Add(new VisualElement()
             {
                 style =
                 {
@@ -95,7 +95,7 @@ namespace UIElementsExamples
                     backgroundColor = Color.red
                 }
             });
-            twoPlusOneContainer.AddChild(new VisualElement()
+            twoPlusOneContainer.Add(new VisualElement()
             {
                 style =
                 {
@@ -118,11 +118,11 @@ namespace UIElementsExamples
                     flexDirection = FlexDirection.Row
                 }
             };
-            root.AddChild(wrapContainer);
+            root.Add(wrapContainer);
 
             for (int i = 0; i < 20; i++)
             {                
-                wrapContainer.AddChild(new VisualElement()
+                wrapContainer.Add(new VisualElement()
                 {
                     style =
                     {

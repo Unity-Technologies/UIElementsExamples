@@ -31,7 +31,7 @@ namespace UIElementsExamples
             // You can use UIElements layout to arrange them, and GUILayout inside them
             var root = this.GetRootVisualContainer();
             root.style.flexDirection = FlexDirection.Row;
-            root.AddChild(new IMGUIContainer(OnGUILeft) { style = { width = 200 } });
+            root.Add(new IMGUIContainer(OnGUILeft) { style = { width = 200 } });
             m_RightContainer = new IMGUIContainer(OnGUIRight) {
                 style = {
                     flex = 1.0f,
@@ -39,7 +39,7 @@ namespace UIElementsExamples
                 },
                 usePixelCaching = true
             };
-            root.AddChild(m_RightContainer);
+            root.Add(m_RightContainer);
         }
 
         void OnGUILeft()
