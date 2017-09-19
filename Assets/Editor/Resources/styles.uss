@@ -48,3 +48,21 @@
     margin-bottom: 5;
     background-color: #0000FF;
 }
+
+.editorControlDisplayer {
+    flex-direction: row;
+}
+
+.editorControlDisplayer .extraField {
+    flex-direction: row;
+    justify-content: space-between;
+    flex: 1;
+}
+
+.editorControlDisplayer .controlField {
+    flex: 1;
+}
+
+.focusButton {
+    max-height: 26;
+}
