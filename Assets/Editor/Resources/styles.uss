@@ -53,6 +53,10 @@
     flex-direction: row;
 }
 
+.editorControlDisplayer .controlLabel {
+    width: 80;
+}
+
 .editorControlDisplayer .extraField {
     flex-direction: row;
     justify-content: space-between;

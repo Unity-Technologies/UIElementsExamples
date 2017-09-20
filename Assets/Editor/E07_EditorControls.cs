@@ -14,7 +14,7 @@ namespace UIElementsExamples
         public static void ShowExample()
         {
             var window = GetWindow<E07_EditorControls>();
-            window.minSize = new Vector2(450, 200);
+            window.minSize = new Vector2(1000, 320);
             window.titleContent = new GUIContent("Example 7");
         }
 
@@ -28,6 +28,10 @@ namespace UIElementsExamples
             m_root = this.GetRootVisualContainer();
             m_root.AddStyleSheetPath("styles");
 
+            AddTestControl<IntegerField, long>(new IntegerField(), (v) => v.ToString());
+            AddTestControl<IntegerField, long>(new IntegerField(), (v) => v.ToString());
+            AddTestControl<DoubleField, double>(new DoubleField(), (v) => v.ToString());
+            AddTestControl<DoubleField, double>(new DoubleField(), (v) => v.ToString());
             AddTestControl<ColorField, Color>(new ColorField(), (v) => v.ToString());
             AddTestControl<ColorField, Color>(new ColorField(), (v) => v.ToString());
             AddTestControl<ObjectField, Object>(new ObjectField{objectType = typeof(Camera)}, (v) => v.name);
@@ -54,6 +58,10 @@ namespace UIElementsExamples
             {
                 m_Stringify = stringify;
                 AddToClassList("editorControlDisplayer");
+
+                var controlLabel = new Label(typeof(T).Name);
+                controlLabel.AddToClassList("controlLabel");
+                Add(controlLabel);
 
                 field.AddToClassList("controlField");
                 field.OnChange(OnChange);
