@@ -1,4 +1,3 @@
-#if ENABLE_EDITOR_CONTROLS
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -32,6 +31,8 @@ namespace UIElementsExamples
             AddTestControl<IntegerField, long>(new IntegerField(), (v) => v.ToString());
             AddTestControl<DoubleField, double>(new DoubleField(), (v) => v.ToString());
             AddTestControl<DoubleField, double>(new DoubleField(), (v) => v.ToString());
+            AddTestControl<TextField, string>(new TextField(), (v) => v);
+            AddTestControl<TextField, string>(new TextField(){isPasswordField = true, maskChar = '*'}, (v) => v);
             AddTestControl<ColorField, Color>(new ColorField(), (v) => v.ToString());
             AddTestControl<ColorField, Color>(new ColorField(), (v) => v.ToString());
             AddTestControl<ObjectField, Object>(new ObjectField{objectType = typeof(Camera)}, (v) => v.name);
@@ -46,14 +47,14 @@ namespace UIElementsExamples
             var cd = new ControlDisplayer<T, U>(field, stringify);
             m_root.Add(cd);
         }
-        
+
         private static int s_CurrFocusIdx = 1;
 
         private class ControlDisplayer<T, U> : VisualElement where T : VisualElement, IControl<U>
         {
             private readonly Label m_Label;
             private readonly Func<U, string> m_Stringify;
-            
+
             public ControlDisplayer(T field, Func<U, string> stringify)
             {
                 m_Stringify = stringify;
@@ -79,8 +80,6 @@ namespace UIElementsExamples
                 extraContainer.Add(m_Label);
                 extraContainer.Add(focusButton);
                 Add(extraContainer);
-
-                //SetLabelText(field);
             }
 
             private void OnChange(ChangeEvent<U> changeEvt)
@@ -96,4 +95,3 @@ namespace UIElementsExamples
         }
     }
 }
-#endif
