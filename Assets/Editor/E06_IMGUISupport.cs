@@ -37,7 +37,7 @@ namespace UIElementsExamples
                     flex = 1.0f,
                     backgroundColor = EditorGUIUtility.isProSkin ? new Color(0.22f, 0.22f, 0.22f, 1) : new Color(0.76f, 0.76f, 0.76f, 1)
                 },
-                usePixelCaching = true
+                clippingOptions = VisualElement.ClippingOptions.ClipAndCacheContents
             };
             root.Add(m_RightContainer);
         }
@@ -70,7 +70,8 @@ namespace UIElementsExamples
 
         void OnGUIRight()
         {
-            m_RightContainer.usePixelCaching = EditorGUILayout.Toggle("Use pixel caching", m_RightContainer.usePixelCaching);
+//            m_RightContainer.usePixelCaching = EditorGUILayout.Toggle("Use pixel caching", m_RightContainer.usePixelCaching);
+            m_RightContainer.clippingOptions = (VisualElement.ClippingOptions)EditorGUILayout.EnumPopup("Clipping", m_RightContainer.clippingOptions);
 
             GUILayout.Label ("Base Settings", EditorStyles.boldLabel);
             myString = EditorGUILayout.TextField ("Text Field", myString);

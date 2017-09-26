@@ -50,7 +50,7 @@ namespace UIElementsExamples
 
             // A VisualContainer will clip its descendants outside of its own
             // rect based on this property
-            boxes.clipChildren = true;
+            boxes.clippingOptions = VisualElement.ClippingOptions.ClipContents;
 
             for (int i = 0; i < m_Colors.Length; i++)
             {
