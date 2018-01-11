@@ -1,3 +1,5 @@
+# Warning: This repository is not up to date, examples have been moved to the Unity repo. See `Tests/EditorTests/UIElementsExamples`
+
 # UIElementsExamples
 Unity project containing examples to use UIElements in the Editor
 
