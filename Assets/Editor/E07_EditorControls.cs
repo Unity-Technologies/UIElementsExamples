@@ -7,6 +7,7 @@ using Object = UnityEngine.Object;
 
 namespace UIElementsExamples
 {
+#if UNITY_2018
     public class E07_EditorControls : EditorWindow
     {
         [MenuItem("UIElementsExamples/07_EditorControls")]
@@ -42,7 +43,7 @@ namespace UIElementsExamples
             AddTestControl<CurveField, AnimationCurve>(new CurveField{value = curveZ}, (v) => "keys: " + v.keys.Length + " - pre: " + v.preWrapMode + " - post: " + v.postWrapMode);
         }
 
-        private void AddTestControl<T, U>(T field, Func<U, string> stringify) where T : VisualElement, IControl<U>
+        private void AddTestControl<T, U>(T field, Func<U, string> stringify) where T : VisualElement, INotifyValueChanged<U>
         {
             var cd = new ControlDisplayer<T, U>(field, stringify);
             m_root.Add(cd);
@@ -50,7 +51,7 @@ namespace UIElementsExamples
 
         private static int s_CurrFocusIdx = 1;
 
-        private class ControlDisplayer<T, U> : VisualElement where T : VisualElement, IControl<U>
+        private class ControlDisplayer<T, U> : VisualElement where T : VisualElement, INotifyValueChanged<U>
         {
             private readonly Label m_Label;
             private readonly Func<U, string> m_Stringify;
@@ -65,7 +66,7 @@ namespace UIElementsExamples
                 Add(controlLabel);
 
                 field.AddToClassList("controlField");
-                field.OnChange(OnChange);
+                field.OnValueChanged(OnChange);
                 field.focusIndex = s_CurrFocusIdx;
                 s_CurrFocusIdx++;
                 Add(field);
@@ -94,4 +95,5 @@ namespace UIElementsExamples
             }
         }
     }
+#endif
 }

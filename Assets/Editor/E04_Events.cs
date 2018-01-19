@@ -19,7 +19,7 @@ namespace UIElementsExamples
         {
             var root = this.GetRootVisualContainer();
             root.AddManipulator(new MouseEventLogger());
-            root.Add(new VisualElement() { style = { backgroundColor = Color.red }, text = "Click me"});
+            root.Add(new Label() { style = { backgroundColor = Color.red }, text = "Click me"});
         }
 
         class MouseEventLogger : Manipulator
