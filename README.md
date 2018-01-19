@@ -3,7 +3,7 @@
 # UIElementsExamples
 Unity project containing examples to use UIElements in the Editor
 
-This project is compatible with Unity 2017.3 (currently in alpha).
+This project is compatible with Unity 2017.3 & 2018.1.
 Please use the 2017.2 branch for this project to work with the previous Unity release.
 
 Please refer to the [Documentation preview document](
