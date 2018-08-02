@@ -1,0 +1,31 @@
+<UXML xmlns:ui="UnityEngine.Experimental.UIElements" xmlns:uie="UnityEditor.Experimental.UIElements">
+  <ui:VisualElement name="custom-container">
+    <ui:Label name="top-label" text="UXML-Defined inspector"/>
+    <ui:Label name="top-label" text="Select a game object in the scene hierarchy to display a few properties"/>
+    <ui:VisualElement name = "nameRow" class="form-row">
+      <ui:Label text="Name" class="form-label"/>
+      <ui:TextField text="" class="form-editor" binding-path="m_Name"/>
+    </ui:VisualElement>
+    <!-- Here we look at the Transform component -->
+   <ui:VisualElement class="form-row">
+      <ui:Label text="Position" class="form-label"/>
+      <uie:Vector3Field text="" class="form-editor" binding-path="m_LocalPosition"/>
+    </ui:VisualElement>
+    <ui:VisualElement class="form-row">
+      <ui:Label text="Position - Y Only" class="form-label"/>
+      <uie:FloatField text="" class="form-editor" binding-path="m_LocalPosition.y"/>
+    </ui:VisualElement>
+    <ui:VisualElement class="form-row">
+      <ui:Label text="Scaling along Y axis" class="form-label"/>
+      <uie:FloatField text="" class="form-editor" binding-path="m_LocalScale.y"/>
+    </ui:VisualElement>
+
+    <!-- This one won't bind since datatypes are not compatible -->
+    <!--
+    <ui:VisualElement class="form-row">
+      <ui:Label text="See console for errors" class="form-label"/>
+      <uie:IntegerField text="" class="form-editor" binding-path="m_LocalScale.y"/>
+    </ui:VisualElement>
+    -->
+  </ui:VisualElement>
+</UXML>

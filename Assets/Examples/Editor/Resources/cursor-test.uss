@@ -1,0 +1,189 @@
+
+#root
+{
+    width: 1000;
+    height: 600;
+}
+
+#root *
+{
+    font-size: 12;
+    color: #ffffff;
+    -unity-text-align: upper-center;
+}
+
+#container
+{
+    flex: 1;
+    flex-direction: row;
+    background-color: #4D4B4B;
+}
+
+#cursor-test-element
+{
+    flex: 1;
+    background-color: #4D4B4B;
+}
+
+.cursortestcontent
+{
+    flex: 1;
+    background-color: #112160;
+    padding-top: 10;
+}
+
+#header
+{
+    background-color: #393636;
+    height: 50;
+}
+
+#test-default-text
+{
+    cursor: text;
+}
+
+#test-custom
+{
+    cursor: url("thumb-up.png"), arrow;
+}
+
+#test-hotspot
+{
+    flex-direction: column;
+    padding-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+}
+
+#test-hotspot *
+{
+    margin-left: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+}
+
+#test-hotspot #child-center
+{
+    flex: 1;
+    cursor: url("thumb-up.png") 12 12, arrow;
+    background-color: #04500C;
+}
+
+#test-hotspot #child-bottom-right
+{
+    flex: 1;
+    cursor: url("thumb-up.png") 24 24, arrow;
+    background-color: #B5B316;
+}
+
+#test-parent
+{
+    justify-content: center;
+    align-items: center;
+    cursor: fps;
+}
+
+#test-parent #child
+{
+    width: 180;
+    height: 100;
+    background-color: #04500C;
+}
+
+#test-stack
+{
+    justify-content: center;
+    align-items: center;
+    cursor: fps;
+}
+
+#test-stack #child1
+{
+    width: 160;
+    height: 180;
+    background-color: #04500C;
+    justify-content: center;
+    align-items: center;
+    cursor: text;
+}
+
+#test-stack #child2
+{
+    width: 120;
+    height: 120;
+    background-color: #B5B316;
+    justify-content: center;
+    align-items: center;
+    cursor: url("thumb-up.png"), arrow;
+}
+
+#test-stack #child3
+{
+    width: 60;
+    height: 60;
+    background-color: #B56416;
+    justify-content: center;
+    align-items: center;
+    cursor: pan;
+}
+
+#test-siblings
+{
+    flex-direction: column;
+    padding-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    cursor: fps;
+}
+
+#test-siblings *
+{
+    height: 60;
+    margin-left: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+}
+
+#test-siblings #child1
+{
+    margin-top: 50;
+    background-color: #04500C;
+    cursor: text;
+}
+
+#test-siblings #child2
+{
+    background-color: #B5B316;
+    cursor: url("thumb-up.png"), arrow;
+}
+
+#test-siblings #child3
+{
+    background-color: #B56416;
+    cursor: pan;
+}
+
+#test-inherit
+{
+    justify-content: center;
+    align-items: center;
+    cursor: fps;
+}
+
+#test-inherit #child
+{
+    width: 180;
+    height: 100;
+    background-color: #04500C;
+   /*cursor: inherit; */
+}
+
+#test-fallback
+{
+    cursor: resource("non-existing-resource"), text;
+}

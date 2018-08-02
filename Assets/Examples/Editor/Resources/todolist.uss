@@ -1,0 +1,43 @@
+TextField {
+    height:16;
+}
+
+ScrollView {
+    flex:1;
+}
+
+Box {
+    flex:1;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+PopupWindow {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 12px;
+}
+
+.task {
+    flex-direction: row;
+    justify-content: space-between;
+    align-self: stretch;
+}
+
+.task:hover {
+    background-color: #222;
+}
+
+.task:focus {
+    background-color: #229;
+}
+
+#checkbox:checked {
+    opacity: 0.5;
+}
+
+.task .highlight Label {
+    text-color: #FF0;
+}

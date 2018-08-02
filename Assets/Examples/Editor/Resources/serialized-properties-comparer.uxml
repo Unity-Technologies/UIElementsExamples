@@ -1,0 +1,6 @@
+<UXML xmlns:ui="UnityEngine.Experimental.UIElements" xmlns:uie="UnityEditor.Experimental.UIElements">
+    <ui:VisualElement class="comparerBoxContainer">
+        <ui:VisualElement class="comparerBox" slot-name="left" />
+        <ui:VisualElement class="comparerBox" slot-name="right" />
+    </ui:VisualElement>
+</UXML>

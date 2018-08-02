@@ -1,0 +1,7 @@
+#planet-name-field {
+    flex-grow: 1;
+}
+
+#planet-size-field {
+    width: 108;
+}
