@@ -1,0 +1,22 @@
+<UXML xmlns:ui="UnityEngine.Experimental.UIElements">
+    <ui:Label text="This container has no tooltip but its children do"/>
+    <ui:VisualElement style="background-color: #4D4B4B; align-items: flex-start;">
+        <ui:Label text="Test 1" tooltip="Test 1"/>
+        <ui:Label text="Test 2" tooltip="Test 2" style="align-self: center"/>
+        <ui:Label text="Test 3" tooltip="Test 3" style="align-self: flex-end" />
+    </ui:VisualElement>
+
+    <ui:VisualElement style="flex-direction:row">
+        <ui:Label text="This container and its children have a tooltip"/>
+        <ui:Toggle text="Visible"/>
+    </ui:VisualElement>
+    <ui:VisualElement name="hideable" style="background-color: #4D4B4B; align-items: flex-start;" tooltip="Parent tooltip">
+        <ui:Label text="Test 1" tooltip="Test 1"/>
+        <ui:Label text="Test 2" tooltip="Test 2" style="align-self: center"/>
+        <ui:Label text="Test 3" tooltip="Test 3" style="align-self: flex-end" />
+    </ui:VisualElement>
+    <ui:Button text="Button with tooltip" tooltip="Clicking button should hide tooltip" />
+
+    <ui:Label name="labelWithPosition" text="This label tooltip will display its position" style="align-self: flex-start;" />
+
+</UXML>

@@ -1,0 +1,7 @@
+<UXML xmlns:ui="UnityEngine.Experimental.UIElements" xmlns:uie="UnityEditor.Experimental.UIElements">
+    <ui:PopupWindow text="Using UXML">
+        <uie:PropertyField name="amountProp" binding-path="amount" />
+        <uie:PropertyField label="CustomLabel: Unit" binding-path="unit" />
+        <uie:PropertyField binding-path="name" />
+    </ui:PopupWindow>
+</UXML>

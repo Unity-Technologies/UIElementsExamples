@@ -1,0 +1,45 @@
+.comparerBox {
+    margin-left: 0;
+    margin-top: 10;
+    margin-right: 0;
+    margin-bottom: 0;
+}
+
+.comparerBox > Label {
+    font-size: 16;
+    margin-bottom: 10;
+}
+
+.boxLabel {
+    font-style: bold;
+}
+
+.comparerPopup {
+    flex: 1;
+}
+
+.comparerBoxSingle {
+    flex: 1;
+    margin-left: 10;
+    margin-top: 0;
+    margin-right: 10;
+    margin-bottom: 10;
+    background-color: rgb(64, 32, 32);
+}
+
+.comparerBoxSingle.comparerBoxNormal {
+    background-color: rgb(32, 64, 32);
+}
+
+.comparerBoxSingle > Label {
+    text-color: #fff;
+}
+
+.comparerBoxContainer {
+    flex: 1;
+    flex-direction: row;
+}
+
+#main-scroll-view {
+    flex: 1;
+}

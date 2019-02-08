@@ -1,0 +1,7 @@
+<UXML xmlns:ui="UnityEngine.Experimental.UIElements" xmlns:ue="UnityEditor.Experimental.UIElements">
+    <ui:VisualElement name="row" class="container">
+        <ui:Label text="UXML" />
+        <ui:TextField />
+        <ue:IntegerField />
+    </ui:VisualElement>
+</UXML>
