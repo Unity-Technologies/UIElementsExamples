@@ -1,10 +1,6 @@
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEditor.Experimental.UIElements;
-using UnityEngine.Experimental.UIElements;
-using UnityEngine.Experimental.UIElements.StyleEnums;
-using UnityEngine.Experimental.UIElements.StyleSheets;
+using UnityEngine.UIElements;
 
 namespace UIElementsExamples
 {
@@ -19,15 +15,14 @@ namespace UIElementsExamples
 
         void OnEnable()
         {
-            var asset = Resources.Load("tooltips") as VisualTreeAsset;
-            var root = this.GetRootVisualContainer();
-            root.Add(asset.CloneTree(null));
+            var asset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Examples/Editor/tooltips.uxml");
+            rootVisualElement.Add(asset.CloneTree());
 
-            Toggle t = root.Q<Toggle>();
+            Toggle t = rootVisualElement.Q<Toggle>();
             t.value = true;
-            t.OnValueChanged(e => root.Q("hideable").visible = e.newValue);
+            t.RegisterValueChangedCallback(e => rootVisualElement.Q("hideable").visible = e.newValue);
 
-            Label labelWithPosition = root.Q<Label>("labelWithPosition");
+            Label labelWithPosition = rootVisualElement.Q<Label>("labelWithPosition");
             labelWithPosition.RegisterCallback<TooltipEvent>(e => {
                 e.rect = labelWithPosition.worldBound;
                 e.tooltip = labelWithPosition.worldBound.ToString();

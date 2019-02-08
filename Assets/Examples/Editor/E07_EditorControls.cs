@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Experimental.UIElements;
-using UnityEditor.Experimental.UIElements;
-using UnityEngine.Experimental.UIElements.StyleEnums;
+using UnityEngine.UIElements;
+using UnityEditor.UIElements;
 using Object = UnityEngine.Object;
 
 namespace UIElementsExamples
@@ -15,15 +14,18 @@ namespace UIElementsExamples
         public static void ShowExample()
         {
             var window = GetWindow<E07_EditorControls>();
-            window.minSize = new Vector2(1000, 320);
+            window.minSize = new Vector2(320, 320);
             window.titleContent = new GUIContent("Example 7");
         }
+
+        bool m_ShowLabelOnFields = true;
 
         private enum EnumValues
         {
             One = 1,
             Two = 2,
-            Five = 5
+            Five = 5,
+            SixWithAVeryLOnnnnnnnnnnnnnnnnnnnngEnumName = 6
         }
 
         private class SomeClass
@@ -41,134 +43,337 @@ namespace UIElementsExamples
             }
         }
 
-        private VisualElement m_root;
+        private class SliderProgressTestObject : ScriptableObject
+        {
+            public int exampleValue = 0;
+        }
 
-        /// <summary>
-        /// The following 3 panes are for the containment of some UIElements fields
-        /// The goal is to display 1 VisualElement, followed by 1 IMGUIContainer...
-        /// </summary>
+        SliderProgressTestObject m_SliderProgressTestObject;
+
+        SliderProgressTestObject SliderProgressTest
+        {
+            get
+            {
+                if (m_SliderProgressTestObject == null)
+                {
+                    m_SliderProgressTestObject = ScriptableObject.CreateInstance<SliderProgressTestObject>();
+                }
+
+                return m_SliderProgressTestObject;
+            }
+        }
+
+        SerializedObject m_sliderProgressTestSO;
+        SerializedObject SliderProgressTestSO
+        {
+            get
+            {
+                return m_sliderProgressTestSO ?? (m_sliderProgressTestSO = new SerializedObject(SliderProgressTest));
+            }
+        }
+
+        SerializedProperty m_sliderProgressTestProperty;
+        SerializedProperty SliderProgressTestProperty
+        {
+            get
+            {
+                return m_sliderProgressTestProperty ?? (m_sliderProgressTestProperty =
+                        SliderProgressTestSO.FindProperty(nameof(SliderProgressTestObject.exampleValue)));
+            }
+        }
+
+        private VisualElement m_RowContainer;
+
+        bool m_UseScrollViewConstruct = false;
+        Toggle m_ScrollViewToggle;
+        ScrollView m_ScrollView;
+
+        // Root Container
+        VisualElement m_RootContainer;
+        // Outer Containers
+        VisualElement m_LeftContainer;
+        VisualElement m_RightContainer;
+
+        // Inner Containers
+        // VisualElement Container
         VisualElement m_VisualElementContainer;
-
-        // IMGUI Containers
+        // IMGUI Container
         IMGUIContainer m_IMGUIContainer;
 
-        string[] m_MaskFieldOptions = { "First Value", "Second Value", "Third Value", "Fourth Value" };
+        string[] m_MaskFieldOptions = { "First Value", "Second Value", "Third Value", "Fourth Value", "Fifth Value - with a very lonnnnnnnnnnnnnnnnnnnnnnng text to make sure it is overflowing" };
+
+        const string k_ButtonLeftTitle = "=BUTTON LEFT=";
+        const string k_ButtonRightTitle = "=BUTTON RIGHT=";
+        const string k_ButtonTopTitle = "=BUTTON TOP=";
+        const string k_ButtonBottomTitle = "=BUTTON BOTTOM=";
+
+        void AddToolbar()
+        {
+            var toolbar = new Toolbar();
+            rootVisualElement.Add(toolbar);
+
+            var tgl1 = new ToolbarToggle { text = "Show Labels" };
+            tgl1.RegisterValueChangedCallback(OnToggleValueChanged);
+            toolbar.Add(tgl1);
+            tgl1.style.flexGrow = 0f;
+            m_ToggleFieldWithLabel = tgl1;
+
+            var spc = new ToolbarSpacer();
+            toolbar.Add(spc);
+
+            var tgl = new ToolbarToggle { text = "Use ScrollView" };
+            tgl.style.flexGrow = 0f;
+            m_ScrollViewToggle = tgl;
+            m_ScrollViewToggle.value = m_UseScrollViewConstruct;
+            m_ScrollViewToggle.RegisterValueChangedCallback(evt => UpdateScrollViewUsage());
+            toolbar.Add(tgl);
+        }
 
         public void OnEnable()
         {
-            var curveX = AnimationCurve.Linear(0, 0, 1, 0);
+            rootVisualElement.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Examples/Editor/styles.uss"));
+            rootVisualElement.style.flexDirection = FlexDirection.Column;
 
-            var popupFieldValues = new List<SomeClass> { new SomeClass("First Class Value"), new SomeClass("Second Value"), new SomeClass("Another Value") };
+            AddToolbar();
+
+            rootVisualElement.Add(m_RootContainer = new VisualElement());
+            m_RootContainer.style.flexGrow = 1;
+            m_RootContainer.style.flexShrink = 1;
+
+            m_ScrollView = new ScrollView();
+            m_ScrollView.showVertical = true;
+
+            m_RowContainer = new VisualElement() {name = "RowContainer"};
+            m_RowContainer.style.flexDirection = FlexDirection.Row;
+            m_ScrollView.Add(m_RowContainer);
+
+            m_IMGUIContainer = new IMGUIContainer(OnGUIForLeftContainer);
+            m_VisualElementContainer = new VisualElement();
+            m_IMGUIContainer.AddToClassList("inner-container");
+            m_VisualElementContainer.AddToClassList("inner-container");
+
+            if (EditorGUIUtility.isProSkin)
+            {
+                m_IMGUIContainer.style.backgroundColor = new Color(0.30f, 0.30f, 0.30f);
+                m_VisualElementContainer.style.backgroundColor = new Color(0.30f, 0.30f, 0.30f);
+            }
+            else
+            {
+                m_IMGUIContainer.style.backgroundColor = new Color(0.80f, 0.80f, 0.80f);
+                m_VisualElementContainer.style.backgroundColor = new Color(0.80f, 0.80f, 0.80f);
+            }
+
+            m_LeftContainer = new VisualElement();
+            m_RightContainer = new VisualElement();
+            m_LeftContainer.AddToClassList("split-container");
+            m_RightContainer.AddToClassList("split-container");
+
+            m_LeftContainer.Add(m_IMGUIContainer);
+            m_RightContainer.Add(m_VisualElementContainer);
+
+            CreateUIElements();
+            UpdateScrollViewUsage();
+        }
+
+        void OnDisable()
+        {
+            if (m_SliderProgressTestObject != null)
+            {
+                ScriptableObject.DestroyImmediate(m_SliderProgressTestObject);
+                m_SliderProgressTestObject = null;
+            }
+        }
+
+        private void OnToggleValueChanged(ChangeEvent<bool> changeEvt)
+        {
+            m_ShowLabelOnFields = changeEvt.newValue;
+            RefreshUIElements();
+        }
+
+        void UpdateScrollViewUsage()
+        {
+            m_UseScrollViewConstruct = m_ScrollViewToggle.value;
+
+            if (m_UseScrollViewConstruct)
+            {
+                m_RootContainer.style.flexDirection = FlexDirection.Column;
+                m_RootContainer.Add(m_ScrollView);
+                m_RowContainer.Add(m_LeftContainer);
+                m_RowContainer.Add(m_RightContainer);
+            }
+            else
+            {
+                if (m_RootContainer.Contains(m_ScrollView))
+                {
+                    m_RootContainer.Remove(m_ScrollView);
+                }
+
+                m_RootContainer.style.flexDirection = FlexDirection.Row;
+                m_RootContainer.Add(m_LeftContainer);
+                m_RootContainer.Add(m_RightContainer);
+            }
+        }
+
+        Toggle m_ToggleFieldWithLabel;
+        IntegerField m_IntegerField;
+        LongField m_LongField;
+        FloatField m_FloatField;
+        DoubleField m_DoubleField;
+        EnumField m_EnumField;
+        TextField m_TextField;
+        TextField m_PasswordField;
+        TextField m_MultiLineTextField;
+        Vector3Field m_Vector3Field;
+        Vector3IntField m_Vector3IntField;
+        Vector2Field m_Vector2Field;
+        ColorField m_ColorField;
+        ColorField m_ColorField1;
+        ObjectField m_ObjectFieldCamera;
+        ObjectField m_ObjectFieldGameObject;
+        CurveField m_CurveField;
+        CurveField m_CurveFieldMesh;
+        PopupField<SomeClass> m_PopupField;
+        RectField m_RectField;
+        BoundsField m_BoundsField;
+        Toggle m_ToggleField;
+        MaskField m_MaskField;
+        LayerField m_LayerField;
+        TagField m_TagField;
+        MinMaxSlider m_MinMaxSliderField;
+        Slider m_Slider;
+        SliderInt m_SliderInt;
+        GradientField m_GradientField;
+        LayerMaskField m_LayerMaskField;
+
+        SliderInt m_SliderProgressBar;
+        ProgressBar m_ProgressBar;
+
+        void CreateUIElements()
+        {
+            var titleRow = new VisualElement()
+            {
+                style =
+                {
+                    flexDirection = FlexDirection.Row,
+                    flexShrink = 0f,
+                    justifyContent = Justify.SpaceBetween
+                }
+            };
+
+            m_VisualElementContainer.Add(new Label("VisualElements Container"));
+
+
+            var curveX = AnimationCurve.Linear(0, 0, 1, 0);
+            var popupFieldValues = new List<SomeClass>
+            {
+                new SomeClass("First Class Value"),
+                new SomeClass("Second Value"),
+                new SomeClass("Another Value"),
+                new SomeClass("Another Value with a very lonnnnnnnnnnnnnnnnnnnnnnnnng text to make sure this is really overflowing the popup field.")
+            };
             var maskFieldOptions = new List<string>(m_MaskFieldOptions);
 
-            m_root = this.GetRootVisualContainer();
-            m_root.AddStyleSheetPath("styles");
 
-            ScrollView sv = new ScrollView();
-            m_root.Add(sv);
-            m_root.style.flexDirection = FlexDirection.Row;
+            m_VisualElementContainer.Add(m_IntegerField = new IntegerField());
+            m_VisualElementContainer.Add(m_LongField = new LongField());
+            m_VisualElementContainer.Add(m_FloatField = new FloatField());
+            m_VisualElementContainer.Add(m_DoubleField = new DoubleField());
+            m_VisualElementContainer.Add(m_EnumField = new EnumField(EnumValues.Two));
+            m_VisualElementContainer.Add(m_TextField = new TextField());
+            m_VisualElementContainer.Add(m_PasswordField = new TextField() { isPasswordField = true, maskChar = '*' });
+            m_VisualElementContainer.Add(m_Vector3Field = new Vector3Field());
+            m_VisualElementContainer.Add(m_Vector3IntField = new Vector3IntField());
+            m_VisualElementContainer.Add(m_Vector2Field = new Vector2Field());
+            m_VisualElementContainer.Add(m_ColorField = new ColorField());
+            m_VisualElementContainer.Add(m_ObjectFieldCamera = new ObjectField() { objectType = typeof(Camera) });
+            m_VisualElementContainer.Add(m_ObjectFieldGameObject = new ObjectField() { objectType = typeof(GameObject) });
+            m_VisualElementContainer.Add(m_CurveField = new CurveField() { value = curveX });
+            m_VisualElementContainer.Add(m_CurveFieldMesh = new CurveField() { value = curveX, renderMode = CurveField.RenderMode.Mesh });
+            m_VisualElementContainer.Add(m_PopupField = new PopupField<SomeClass>(popupFieldValues, popupFieldValues[1]));
+            m_VisualElementContainer.Add(m_RectField = new RectField());
+            m_VisualElementContainer.Add(m_BoundsField = new BoundsField());
+            m_VisualElementContainer.Add(m_ToggleField = new Toggle());
+            m_VisualElementContainer.Add(m_MaskField = new MaskField(maskFieldOptions, 6));
+            m_VisualElementContainer.Add(m_LayerField = new LayerField());
+            m_VisualElementContainer.Add(m_TagField = new TagField());
+            m_VisualElementContainer.Add(m_MinMaxSliderField = new MinMaxSlider(5, 10, 0, 125));
+            m_VisualElementContainer.Add(m_Slider = new Slider(2, 8));
+            m_VisualElementContainer.Add(m_SliderInt = new SliderInt(11, 23));
 
-            sv.StretchToParentSize();
-            sv.stretchContentWidth = true;
-            sv.contentContainer.style.flexDirection = FlexDirection.Row;
-            sv.showVertical = true;
-
-            m_IMGUIContainer = new IMGUIContainer(OnGUIForLeftContainer)
+            var buttonRow = new VisualElement()
             {
                 style =
                 {
-                    flex = new Flex(1.0f),
-                    backgroundColor = new Color(0.30f, 0.30f, 0.30f),
+                    flexDirection = FlexDirection.Row,
+                    flexShrink = 0f,
                 }
             };
+            buttonRow.Add(new Button() {text = k_ButtonLeftTitle, style = {flexGrow = 1}});
+            buttonRow.Add(new Button() {text = k_ButtonRightTitle, style = {flexGrow = 1}});
+            m_VisualElementContainer.Add(buttonRow);
 
-            sv.Add(m_IMGUIContainer);
+            m_VisualElementContainer.Add(new Button() {text = k_ButtonTopTitle});
+            m_VisualElementContainer.Add(new Button() {text = k_ButtonBottomTitle});
 
-            m_VisualElementContainer = new VisualElement()
-            {
-                style =
-                {
-                    flex = new Flex(1.0f),
-                }
-            };
-            sv.Add(m_VisualElementContainer);
-            m_VisualElementContainer.Add(new Label("VisualElements Container"));
-            {
-                AddTestControl<IntegerField, int>(new IntegerField(), (v) => v.ToString());
-                AddTestControl<LongField, long>(new LongField(), (v) => v.ToString());
-                AddTestControl<FloatField, float>(new FloatField(), (v) => v.ToString());
-                AddTestControl<DoubleField, double>(new DoubleField(), (v) => v.ToString());
-                AddTestControl<EnumField, Enum>(new EnumField(EnumValues.Two), (v) => v.ToString() + " == " + (int)((EnumValues)v));
-                AddTestControl<TextField, string>(new TextField(), (v) => v);
-                AddTestControl<TextField, string>(new TextField() {isPasswordField = true, maskChar = '*'}, (v) => v);
-                AddTestControl<Vector3Field, Vector3>(new Vector3Field(), (v) => v.ToString());
-                AddTestControl<Vector3IntField, Vector3Int>(new Vector3IntField(), (v) => v.ToString());
-                AddTestControl<ColorField, Color>(new ColorField(), (v) => v.ToString());
-                AddTestControl<GradientField, Gradient>(new GradientField(), (v) => v.ToString());
-                AddTestControl<ObjectField, Object>(new ObjectField {objectType = typeof(Camera)}, (v) => v.name);
-                AddTestControl<ObjectField, Object>(new ObjectField {objectType = typeof(GameObject)}, (v) => v.name);
-                AddTestControl<CurveField, AnimationCurve>(new CurveField {value = curveX}, (v) => "keys: " + v.keys.Length + " - pre: " + v.preWrapMode + " - post: " + v.postWrapMode);
-                AddTestControl<CurveField, AnimationCurve>(new CurveField {value = curveX, renderMode = CurveField.RenderMode.Mesh}, (v) => "keys: " + v.keys.Length + " - pre: " + v.preWrapMode + " - post: " + v.postWrapMode);
-                AddTestControl<PopupField<SomeClass>, SomeClass>(new PopupField<SomeClass>(popupFieldValues, popupFieldValues[1]), v => v.Name);
-                AddTestControl<RectField, Rect>(new RectField(), (v) => v.ToString());
-                AddTestControl<BoundsField, Bounds>(new BoundsField(), (v) => v.ToString());
-                AddTestControl<Toggle, bool>(new Toggle(), (v) => v.ToString());
-                AddTestControl<MaskField, int>(new MaskField(maskFieldOptions, 6), v => "0x" + v.ToString("X8"));
-                AddTestControl<LayerMaskField, int>(new LayerMaskField(0), v => "0x" + v.ToString("X8"));
-                AddTestControl<LayerField, int>(new LayerField(), v => v.ToString());
-                AddTestControl<TagField, string>(new TagField(), v => v.ToString());
-                AddTestControl<MinMaxSlider, Vector2>(new MinMaxSlider(5, 10, 0, 125), (v) => v.ToString());
-            }
+            m_VisualElementContainer.Add(m_ColorField1 = new ColorField());
+            m_VisualElementContainer.Add(m_LayerMaskField = new LayerMaskField(0));
+            m_VisualElementContainer.Add(m_MultiLineTextField = new TextField() {multiline = true});
+
+            m_VisualElementContainer.Add(m_SliderProgressBar = new SliderInt());
+            m_VisualElementContainer.Add(m_ProgressBar = new ProgressBar());
+
+            m_ProgressBar.title = nameof(ProgressBar);
+            m_SliderProgressBar.lowValue = 0;
+            m_SliderProgressBar.highValue = 100;
+
+            m_SliderProgressBar.bindingPath = nameof(SliderProgressTestObject.exampleValue);
+            m_ProgressBar.bindingPath = nameof(SliderProgressTestObject.exampleValue);
+
+            m_SliderProgressBar.Bind(SliderProgressTestSO);
+            m_ProgressBar.Bind(SliderProgressTestSO);
+            // The progress bar by itself does not contain any margin in IMGUI...
+            // In this example, we are artifically adding the textfield margin to it. (see below, in the IMGUI section, ProgressBar())
+            m_ProgressBar.style.marginBottom = 2f;
+
+            m_VisualElementContainer.Add(m_GradientField = new GradientField());
+            RefreshUIElements();
         }
 
-        private void AddTestControl<T, U>(T field, Func<U, string> stringify) where T : VisualElement, INotifyValueChanged<U>
+        void RefreshUIElements()
         {
-            var cd = new ControlDisplayer<T, U>(field, stringify);
-            m_VisualElementContainer.Add(cd);
+            m_ToggleFieldWithLabel.SetValueWithoutNotify(m_ShowLabelOnFields);
+            m_IntegerField.label = m_ShowLabelOnFields ? typeof(IntegerField).Name : null;
+            m_LongField.label = m_ShowLabelOnFields ? typeof(LongField).Name : null;
+            m_FloatField.label = m_ShowLabelOnFields ? typeof(FloatField).Name : null;
+            m_DoubleField.label = m_ShowLabelOnFields ? typeof(DoubleField).Name : null;
+            m_EnumField.label = m_ShowLabelOnFields ? typeof(EnumField).Name : null;
+            m_TextField.label = m_ShowLabelOnFields ? typeof(TextField).Name : null;
+            m_PasswordField.label = m_ShowLabelOnFields ? typeof(TextField).Name : null;
+            m_Vector3Field.label = m_ShowLabelOnFields ? typeof(Vector3Field).Name : null;
+            m_Vector3IntField.label = m_ShowLabelOnFields ? typeof(Vector3IntField).Name : null;
+            m_Vector2Field.label = m_ShowLabelOnFields ? typeof(Vector2Field).Name : null;
+            m_ColorField.label = m_ShowLabelOnFields ? typeof(ColorField).Name : null;
+            m_ColorField1.label = m_ShowLabelOnFields ? typeof(ColorField).Name : null;
+            m_ObjectFieldCamera.label = m_ShowLabelOnFields ? typeof(ObjectField).Name : null;
+            m_ObjectFieldGameObject.label = m_ShowLabelOnFields ? typeof(ObjectField).Name : null;
+            m_CurveField.label = m_ShowLabelOnFields ? typeof(CurveField).Name : null;
+            m_CurveFieldMesh.label = m_ShowLabelOnFields ? typeof(CurveField).Name : null;
+            m_PopupField.label = m_ShowLabelOnFields ? typeof(PopupField<SomeClass>).Name : null;
+            m_RectField.label = m_ShowLabelOnFields ? typeof(RectField).Name : null;
+            m_BoundsField.label = m_ShowLabelOnFields ? typeof(BoundsField).Name : null;
+            m_ToggleField.label = m_ShowLabelOnFields ? typeof(Toggle).Name : null;
+            m_MaskField.label = m_ShowLabelOnFields ? typeof(MaskField).Name : null;
+            m_LayerField.label = m_ShowLabelOnFields ? typeof(LayerField).Name : null;
+            m_TagField.label = m_ShowLabelOnFields ? typeof(TagField).Name : null;
+            m_MinMaxSliderField.label = m_ShowLabelOnFields ? typeof(MinMaxSlider).Name : null;
+            m_Slider.label = m_ShowLabelOnFields ? typeof(Slider).Name : null;
+            m_SliderInt.label = m_ShowLabelOnFields ? typeof(SliderInt).Name : null;
+            m_GradientField.label = m_ShowLabelOnFields ? typeof(GradientField).Name : null;
+            m_LayerMaskField.label = m_ShowLabelOnFields ? typeof(LayerMaskField).Name : null;
+            m_MultiLineTextField.label = m_ShowLabelOnFields ? "MultiLine " + typeof(TextField).Name : null;
+
+            m_SliderProgressBar.label = m_ShowLabelOnFields ? typeof(SliderInt).Name : null;
         }
-
-        private class ControlDisplayer<T, U> : VisualElement where T : VisualElement, INotifyValueChanged<U>
-        {
-            private readonly Label m_Label;
-            private readonly Func<U, string> m_Stringify;
-
-            public ControlDisplayer(T field, Func<U, string> stringify)
-            {
-                m_Stringify = stringify;
-                AddToClassList("editorControlDisplayer");
-
-                var controlLabel = new Label(typeof(T).Name);
-                controlLabel.AddToClassList("controlLabel");
-                Add(controlLabel);
-
-                field.AddToClassList("controlField");
-                field.OnValueChanged(OnValueChanged);
-                Add(field);
-
-                var extraContainer = new VisualElement();
-                extraContainer.AddToClassList("extraField");
-
-                m_Label = new Label();
-                var focusButton = new Button(() => field.Focus()) { text = "Focus!" };
-                focusButton.AddToClassList("focusButton");
-
-                extraContainer.Add(m_Label);
-                extraContainer.Add(focusButton);
-                Add(extraContainer);
-            }
-
-            private void OnValueChanged(ChangeEvent<U> changeEvt)
-            {
-                SetLabelText((T)changeEvt.target);
-            }
-
-            private void SetLabelText(T field)
-            {
-                U value = field.value;
-                m_Label.text = value != null ? m_Stringify(value) : "None";
-            }
-        }
-
 
         // These properties are explicitely for the IMGUI elements
         int m_IntegerFieldValue;
@@ -180,6 +385,7 @@ namespace UIElementsExamples
         string m_PasswordFieldValue;
         Vector3 m_Vector3FieldValue;
         Vector3Int m_Vector3IntFieldValue;
+        Vector2 m_Vector2FieldValue;
 
         Color m_ColorFieldValue;
         Object m_CameraObjectFieldValue;
@@ -196,69 +402,119 @@ namespace UIElementsExamples
         int m_MaskFieldValue = 6;
         int m_LayerFieldValue = 0;
         string m_TagFieldValue = "";
+        string m_MultiLineTextAreaValue = "";
 
         float m_MinMaxSliderMinValue = 5;
         float m_MinMaxSliderMaxValue = 10;
         float m_MinMaxSliderMinLimit = 0;
         float m_MinMaxSliderMaxLimit = 125;
+        float m_SliderValue = 2;
+        int m_SliderIntValue = 11;
 
 
         bool m_ToggleRightValue = false;
 
-        static void AddTestField<T>(string fieldName, ref T fieldValue, Func<string, T> fieldCreator, Func<T, string> stringify)
-        {
-            EditorGUILayout.BeginHorizontal();
-            GUI.SetNextControlName(fieldName);
-            fieldValue = fieldCreator(fieldName);
-            AddFocusButtonGUI(fieldName, (fieldValue != null) ? stringify(fieldValue) : "");
-            EditorGUILayout.EndHorizontal();
-        }
-
-        void AddTestMinMaxSlider(string fieldName)
-        {
-            EditorGUILayout.BeginHorizontal();
-            GUI.SetNextControlName(fieldName);
-            EditorGUILayout.MinMaxSlider(fieldName, ref m_MinMaxSliderMinValue, ref m_MinMaxSliderMaxValue, m_MinMaxSliderMinLimit, m_MinMaxSliderMaxLimit);
-            Vector2 valueToDisplay = new Vector2(m_MinMaxSliderMinValue, m_MinMaxSliderMaxValue);
-            AddFocusButtonGUI(fieldName, valueToDisplay.ToString());
-            EditorGUILayout.EndHorizontal();
-        }
-
-        static void AddFocusButtonGUI(string fieldName, string valueToDisplay)
-        {
-            EditorGUILayout.LabelField(valueToDisplay);
-            if (GUILayout.Button("Focus!"))
-            {
-                GUI.FocusControl(fieldName);
-            }
-        }
-
         void OnGUIForLeftContainer()
         {
+            // the 330 is from Editor.k_WideModeMinWidth, see InspectorWindow.cs for the code doing it for the IMGUI Inspector.
+            EditorGUIUtility.wideMode = m_IMGUIContainer.layout.width > 330;
             EditorGUILayout.LabelField("IMGUI Container");
-            AddTestField("IntField", ref m_IntegerFieldValue, intFieldName => EditorGUILayout.IntField(intFieldName, m_IntegerFieldValue), v => v.ToString());
-            AddTestField("LongField", ref m_LongFieldValue, longFieldName => EditorGUILayout.LongField(longFieldName , m_LongFieldValue), v => v.ToString());
-            AddTestField("FloatField", ref m_FloatFieldValue, floatFieldName => EditorGUILayout.FloatField(floatFieldName , m_FloatFieldValue), v => v.ToString());
-            AddTestField("DoubleField", ref m_DoubleFieldValue, doubleFieldName => EditorGUILayout.DoubleField(doubleFieldName, m_DoubleFieldValue), v => v.ToString());
-            AddTestField("EnumPopup", ref m_EnumValuesFieldValue, enumPopupFieldName => (EnumValues)EditorGUILayout.EnumPopup(enumPopupFieldName, m_EnumValuesFieldValue), v => v.ToString());
-            AddTestField("TextField", ref m_TextFieldValue, textFieldName => EditorGUILayout.TextField(textFieldName, m_TextFieldValue), v => v.ToString());
-            AddTestField("PasswordField", ref m_PasswordFieldValue, passwordFieldName => EditorGUILayout.PasswordField(passwordFieldName, m_PasswordFieldValue), v => v.ToString());
-            AddTestField("Vector3Field", ref m_Vector3FieldValue, vector3FieldName => EditorGUILayout.Vector3Field(vector3FieldName, m_Vector3FieldValue), v => v.ToString());
-            AddTestField("Vector3IntField", ref m_Vector3IntFieldValue, vector3IntFieldName => EditorGUILayout.Vector3IntField(vector3IntFieldName, m_Vector3IntFieldValue), v => v.ToString());
-            AddTestField("ColorField", ref m_ColorFieldValue, colorFieldName => EditorGUILayout.ColorField(colorFieldName, m_ColorFieldValue), v => v.ToString());
-            // GradientField is internal...
-            AddTestField("ObjectField Camera", ref m_CameraObjectFieldValue, cameraObjectFieldName => EditorGUILayout.ObjectField(cameraObjectFieldName, m_CameraObjectFieldValue, typeof(Camera), true), v => v.ToString());
-            AddTestField("ObjectField GameObj", ref m_GameObjectFieldValue, gameObjectFieldName => EditorGUILayout.ObjectField(gameObjectFieldName, m_GameObjectFieldValue, typeof(GameObject), true), v => v.ToString());
-            AddTestField("CurveField X", ref m_CurveXValue, curveXFieldName => EditorGUILayout.CurveField(curveXFieldName, m_CurveXValue), v => v.ToString());
-            AddTestField("CurveField Mesh", ref m_CurveMeshValue, curveMeshFieldName => EditorGUILayout.CurveField(curveMeshFieldName, m_CurveMeshValue), v => v.ToString());
-            AddTestField("Popup", ref m_PopupFieldValue, popupFieldName => EditorGUILayout.Popup(popupFieldName, m_PopupFieldValue, m_PopupFieldOptions), v => v.ToString());
-            AddTestField("RectField", ref m_RectFieldValue, rectFieldName => EditorGUILayout.RectField(rectFieldName, m_RectFieldValue), v => v.ToString());
-            AddTestField("BoundsField", ref m_BoundsFieldValue, boundsFieldName => EditorGUILayout.BoundsField(boundsFieldName, m_BoundsFieldValue), v => v.ToString());
-            AddTestField("Toggle", ref m_ToggleRightValue, toggleFieldName => EditorGUILayout.Toggle(toggleFieldName, m_ToggleRightValue), v => v.ToString());
-            AddTestField("MaskField", ref m_MaskFieldValue, maskFieldName => EditorGUILayout.MaskField(maskFieldName, m_MaskFieldValue, m_MaskFieldOptions), v => "0x" + v.ToString("X8"));
-            AddTestField("LayerField", ref m_LayerFieldValue, layerFieldName => EditorGUILayout.LayerField(layerFieldName, m_LayerFieldValue), v => v.ToString());
-            AddTestField("TagField", ref m_TagFieldValue, tagFieldName => EditorGUILayout.TagField(tagFieldName, m_TagFieldValue), v => v.ToString());
-            AddTestMinMaxSlider("MinMaxSlider");
+
+            if (m_ShowLabelOnFields)
+            {
+                m_IntegerFieldValue = EditorGUILayout.IntField("IntField", m_IntegerFieldValue);
+                m_LongFieldValue = EditorGUILayout.LongField("LongField", m_LongFieldValue);
+                m_FloatFieldValue = EditorGUILayout.FloatField("FloatField", m_FloatFieldValue);
+                m_DoubleFieldValue = EditorGUILayout.DoubleField("DoubleField", m_DoubleFieldValue);
+                m_EnumValuesFieldValue = (EnumValues)EditorGUILayout.EnumPopup("EnumPopup", m_EnumValuesFieldValue);
+                m_TextFieldValue = EditorGUILayout.TextField("TextField", m_TextFieldValue);
+                m_PasswordFieldValue = EditorGUILayout.PasswordField("PasswordField", m_PasswordFieldValue);
+                m_Vector3FieldValue = EditorGUILayout.Vector3Field("Vector3Field", m_Vector3FieldValue);
+                m_Vector3IntFieldValue = EditorGUILayout.Vector3IntField("Vector3IntField", m_Vector3IntFieldValue);
+                m_Vector2FieldValue = EditorGUILayout.Vector2Field("Vector2Field", m_Vector2FieldValue);
+
+                m_ColorFieldValue = EditorGUILayout.ColorField("ColorField", m_ColorFieldValue);
+                m_CameraObjectFieldValue = EditorGUILayout.ObjectField("ObjectField Camera", m_CameraObjectFieldValue, typeof(Camera), true);
+                m_GameObjectFieldValue = EditorGUILayout.ObjectField("ObjectField GameObj", m_GameObjectFieldValue, typeof(GameObject), true);
+                m_CurveXValue = EditorGUILayout.CurveField("CurveField X", m_CurveXValue);
+                m_CurveMeshValue = EditorGUILayout.CurveField("CurveField Mesh", m_CurveMeshValue);
+                m_PopupFieldValue = EditorGUILayout.Popup("Popup", m_PopupFieldValue, m_PopupFieldOptions);
+                m_RectFieldValue = EditorGUILayout.RectField("RectField", m_RectFieldValue);
+                m_BoundsFieldValue = EditorGUILayout.BoundsField("BoundsField", m_BoundsFieldValue);
+                m_ToggleRightValue = EditorGUILayout.Toggle("Toggle", m_ToggleRightValue);
+                m_MaskFieldValue = EditorGUILayout.MaskField("MaskField", m_MaskFieldValue, m_MaskFieldOptions);
+                m_LayerFieldValue = EditorGUILayout.LayerField("LayerField", m_LayerFieldValue);
+                m_TagFieldValue = EditorGUILayout.TagField("TagField", m_TagFieldValue);
+                EditorGUILayout.MinMaxSlider("MinMaxSlider", ref m_MinMaxSliderMinValue, ref m_MinMaxSliderMaxValue, m_MinMaxSliderMinLimit, m_MinMaxSliderMaxLimit);
+                m_SliderValue = EditorGUILayout.Slider("Slider", m_SliderValue, 2, 8);
+                m_SliderIntValue = EditorGUILayout.IntSlider("IntSlider", m_SliderIntValue, 11, 23);
+            }
+            else
+            {
+                m_IntegerFieldValue = EditorGUILayout.IntField(m_IntegerFieldValue);
+                m_LongFieldValue = EditorGUILayout.LongField(m_LongFieldValue);
+                m_FloatFieldValue = EditorGUILayout.FloatField(m_FloatFieldValue);
+                m_DoubleFieldValue = EditorGUILayout.DoubleField(m_DoubleFieldValue);
+                m_EnumValuesFieldValue = (EnumValues)EditorGUILayout.EnumPopup(m_EnumValuesFieldValue);
+                m_TextFieldValue = EditorGUILayout.TextField(m_TextFieldValue);
+                m_PasswordFieldValue = EditorGUILayout.PasswordField(m_PasswordFieldValue);
+                m_Vector3FieldValue = EditorGUILayout.Vector3Field("Vector3Field", m_Vector3FieldValue);
+                m_Vector3IntFieldValue = EditorGUILayout.Vector3IntField("Vector3IntField", m_Vector3IntFieldValue);
+                m_Vector2FieldValue = EditorGUILayout.Vector2Field("Vector2Field", m_Vector2FieldValue);
+
+                m_ColorFieldValue = EditorGUILayout.ColorField(m_ColorFieldValue);
+                m_CameraObjectFieldValue = EditorGUILayout.ObjectField(m_CameraObjectFieldValue, typeof(Camera), true);
+                m_GameObjectFieldValue = EditorGUILayout.ObjectField(m_GameObjectFieldValue, typeof(GameObject), true);
+                m_CurveXValue = EditorGUILayout.CurveField(m_CurveXValue);
+                m_CurveMeshValue = EditorGUILayout.CurveField(m_CurveMeshValue);
+                m_PopupFieldValue = EditorGUILayout.Popup(m_PopupFieldValue, m_PopupFieldOptions);
+                m_RectFieldValue = EditorGUILayout.RectField(m_RectFieldValue);
+                m_BoundsFieldValue = EditorGUILayout.BoundsField(m_BoundsFieldValue);
+                m_ToggleRightValue = EditorGUILayout.Toggle(m_ToggleRightValue);
+                m_MaskFieldValue = EditorGUILayout.MaskField(m_MaskFieldValue, m_MaskFieldOptions);
+                m_LayerFieldValue = EditorGUILayout.LayerField(m_LayerFieldValue);
+                m_TagFieldValue = EditorGUILayout.TagField(m_TagFieldValue);
+                EditorGUILayout.MinMaxSlider(ref m_MinMaxSliderMinValue, ref m_MinMaxSliderMaxValue, m_MinMaxSliderMinLimit, m_MinMaxSliderMaxLimit);
+                m_SliderValue = EditorGUILayout.Slider(m_SliderValue, 2, 8);
+                m_SliderIntValue = EditorGUILayout.IntSlider(m_SliderIntValue, 11, 23);
+            }
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Button(k_ButtonLeftTitle);
+            GUILayout.Button(k_ButtonRightTitle);
+            GUILayout.EndHorizontal();
+            GUILayout.Button(k_ButtonTopTitle);
+            GUILayout.Button(k_ButtonBottomTitle);
+
+            SliderProgressTestSO.Update();
+
+            if (m_ShowLabelOnFields)
+            {
+                m_ColorFieldValue = EditorGUILayout.ColorField("ColorField", m_ColorFieldValue);
+                m_LayerFieldValue = EditorGUILayout.LayerField("LayerField", m_LayerFieldValue);
+                m_MultiLineTextAreaValue = EditorGUILayout.TextArea(m_MultiLineTextAreaValue);
+                EditorGUILayout.IntSlider(SliderProgressTestProperty, 0, 100, new GUIContent("IntSlider"));
+                ProgressBar(SliderProgressTestProperty.intValue / 100.0f, "Progress Bar");
+                m_ColorFieldValue = EditorGUILayout.ColorField("ColorField", m_ColorFieldValue);
+            }
+            else
+            {
+                m_ColorFieldValue = EditorGUILayout.ColorField(m_ColorFieldValue);
+                m_LayerFieldValue = EditorGUILayout.LayerField(m_LayerFieldValue);
+                m_MultiLineTextAreaValue = EditorGUILayout.TextArea(m_MultiLineTextAreaValue);
+                EditorGUILayout.IntSlider(SliderProgressTestProperty, 0, 100);
+                ProgressBar(SliderProgressTestProperty.intValue / 100.0f, "Progress Bar");
+                m_ColorFieldValue = EditorGUILayout.ColorField(m_ColorFieldValue);
+            }
+            SliderProgressTestSO.ApplyModifiedProperties();
+        }
+
+        // Custom GUILayout progress bar.
+        static void ProgressBar(float value, string label)
+        {
+            // Get a rect for the progress bar using the same margins as a textfield:
+            var rect = GUILayoutUtility.GetRect(18, 18, "TextField");
+            EditorGUI.ProgressBar(rect, value, label);
         }
     }
 }

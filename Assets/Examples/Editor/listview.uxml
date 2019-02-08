@@ -1,0 +1,4 @@
+<UXML xmlns:ui="UnityEngine.Experimental.UIElements">
+    <ui:ListView name="XML_View_no_item_height" view-data-key="XML_View_no_item_height" />
+    <ui:ListView name="XML_View_with_item_height" view-data-key="XML_View_with_item_height" item-height="40" />
+</UXML>

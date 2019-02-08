@@ -1,12 +1,11 @@
 using UnityEditor;
 using UnityEngine;
-using UnityEditor.Experimental.UIElements;
-using UnityEngine.Experimental.UIElements;
+using UnityEditor.UIElements;
+using UnityEngine.UIElements;
 using System.Linq;
 using System;
 using Object = UnityEngine.Object;
 using System.Collections.Generic;
-using UnityEditor.Experimental;
 
 namespace UIElementsExamples
 {
@@ -32,20 +31,17 @@ namespace UIElementsExamples
 
         protected virtual void OnEnable()
         {
-            var root = this.GetRootVisualContainer();
-
             var button = new Button(Refresh) { text = "Refresh" };
-            root.Add(button);
+            rootVisualElement.Add(button);
 
             scrollView = new ScrollView();
-            scrollView.style.flex = new Flex(1);
-            scrollView.stretchContentWidth = true;
-            scrollView.persistenceKey = "main-scroll-bar";
+            scrollView.style.flexGrow = 1f;
+            scrollView.viewDataKey = "main-scroll-bar";
             scrollView.verticalScroller.slider.pageSize = 100;
-            root.Add(scrollView);
+            rootVisualElement.Add(scrollView);
 
-            m_VSTree = Resources.Load("inspector-comparer") as VisualTreeAsset;
-            root.AddStyleSheetPath("inspector-comparer-style");
+            m_VSTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Examples/Editor/Bindings/inspector-comparer.uxml");
+            rootVisualElement.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Examples/Editor/Bindings/inspector-comparer-style.uss"));
 
             Refresh();
         }
@@ -71,14 +67,14 @@ namespace UIElementsExamples
             }
         }
 
+        IMGUIContainer m_IMGUIContainer;
         protected VisualElement GenerateInspectorsBox(Object target)
         {
             // Load the uxml for the inspector comparer box.
-            Dictionary<string, VisualElement> slots = new Dictionary<string, VisualElement>();
-            var box = m_VSTree.CloneTree(slots);
+            var box = m_VSTree.CloneTree();
 
             // Load and apply the uss style for the inspector comparer box.
-            box.AddStyleSheetPath("inspector-comparer-style");
+            box.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Examples/Editor/Bindings/inspector-comparer-style.uss"));
 
             // Get target object name and set the box label text.
             string name = target.name;
@@ -90,20 +86,12 @@ namespace UIElementsExamples
 
             // Create and add the normal (mode) IMGUI inspector.
             var imNormalInspector = new IMGUIContainer(() => { DoDrawNormalIMGUIInspector(target); });
-            slots["normal-imgui-popup"].Add(imNormalInspector);
+            box.Q("normal-imgui-popup").Add(imNormalInspector);
 
             // Create and add the normal (mode) UIElements inspector.
             var uieNormalInspector = box.Q<InspectorElement>("uxml-created-inspector");
             if (uieNormalInspector != null)
                 uieNormalInspector.Bind(new SerializedObject(target));
-
-            // Create and add the default IMGUI inspector.
-            var imDefaultInspector = new IMGUIContainer(() => { DoDrawDefaultIMGUIInspector(target); });
-            slots["default-imgui-popup"].Add(imDefaultInspector);
-
-            // Create and add the default UIElements inspector.
-            var uieDefaultInspector = new InspectorElement(target, InspectorElement.Mode.Default);
-            slots["default-uie-popup"].Add(uieDefaultInspector);
 
             return box;
         }

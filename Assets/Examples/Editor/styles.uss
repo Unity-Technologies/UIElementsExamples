@@ -1,27 +1,23 @@
 .horizontalContainer {
-    margin-left: 50;
-    margin-top: 50;
-    margin-right: 50;
-    margin-bottom: 50;
+    margin: 50px;
     flex-direction: row;
 }
 
 #boxesContainer {
-    padding-left: 10;
-    padding-top: 10;
-    padding-right: 10;
-    padding-bottom: 10;
+    padding: 10px;
     background-color: rgb(128, 128, 128);
     align-self: flex-start;
+    flex-shrink: 0;
 }
 
 #boxesContainer > VisualElement {
-    width: 100;
-    height: 100;
+    width: 100px;
+    height: 100px;
 }
 
-#2Plus1Container {
-    height: 100;
+#TwoPlusOneContainer {
+    height: 100px;
+    flex-shrink: 0;
 }
 
 #large {
@@ -39,21 +35,14 @@
 }
 
 #wrapContainer > VisualElement {
-    width: 20;
-    height: 20;
-    margin-left: 5;
-    margin-top: 5;
-    margin-right: 5;
-    margin-bottom: 5;
+    width: 20px;
+    height: 20px;
+    margin: 5px;
     background-color: #0000FF;
 }
 
 .editorControlDisplayer {
     flex-direction: row;
-}
-
-.editorControlDisplayer .controlLabel {
-    width: 80;
 }
 
 .editorControlDisplayer .extraField {
@@ -67,9 +56,23 @@
 }
 
 .focusButton {
-    max-height: 20;
+    max-height: 20px;
 }
 
-ListView {
-    -unity-item-height: 20;
+.unity-list-view {
+    --unity-item-height: 20;
+}
+
+TreeView {
+    --unity-item-height: 15;
+}
+
+.split-container {
+    flex: 1;
+    padding: 10px;
+}
+
+.inner-container {
+    flex: 1;
+    overflow: hidden;
 }

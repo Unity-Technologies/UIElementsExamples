@@ -1,43 +1,13 @@
-using System;
-using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.Experimental;
-using UnityEditor.Experimental.UIElements;
+using UnityEditor.UIElements;
 using UnityEngine;
-using UnityEngine.Experimental.UIElements;
-using PopupWindow = UnityEngine.Experimental.UIElements.PopupWindow;
+using UnityEngine.UIElements;
+using PopupWindow = UnityEngine.UIElements.PopupWindow;
 
 namespace UIElementsExamples
 {
-    [Serializable]
-    public class DefaultDrawerType
-    {
-        public enum IngredientUnit { Spoon, Cup, Bowl, Piece }
-        public string name;
-        public int amount = 1;
-        public IngredientUnit unit;
-    }
-
-    [Serializable]
-    public class IMGUIDrawerType
-    {
-        public enum IngredientUnit { Spoon, Cup, Bowl, Piece }
-        public string name;
-        public int amount = 1;
-        public IngredientUnit unit;
-    }
-
-    [Serializable]
-    public class UIElementsDrawerType
-    {
-        public enum IngredientUnit { Spoon, Cup, Bowl, Piece }
-        public string name;
-        public int amount = 1;
-        public IngredientUnit unit;
-    }
-
     [CustomPropertyDrawer(typeof(IMGUIDrawerType))]
-    public class IMGUICustomDrawer : UIElementsPropertyDrawer
+    public class IMGUICustomDrawer : PropertyDrawer
     {
         // Draw the property inside the given rect
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -89,8 +59,8 @@ namespace UIElementsExamples
             }
 
             { // Create drawer using UXML
-                var vsTree = Resources.Load("custom-drawer") as VisualTreeAsset;
-                var drawer = vsTree.CloneTree(null, property.propertyPath);
+                var vsTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Editor/Bindings/custom-drawer.uxml");
+                var drawer = vsTree.CloneTree(property.propertyPath);
                 drawer.Q<PopupWindow>().text = property.displayName + " - Using UXML";
                 container.Add(drawer);
             }

@@ -1,6 +1,5 @@
 using UnityEditor;
-using UnityEditor.Experimental.UIElements;
-using UnityEngine.Experimental.UIElements;
+using UnityEngine.UIElements;
 using UnityEngine;
 
 namespace UIElementsExamples
@@ -21,11 +20,9 @@ namespace UIElementsExamples
 
         public void OnEnable()
         {
-            var root = this.GetRootVisualContainer();
+            var root = this.rootVisualElement;
 
             ScrollView sv = new ScrollView();
-            sv.stretchContentWidth = true;
-            sv.StretchToParentSize();
 
             m_Inspector = new CustomUxmlInspector(); //The magic happens in there, go look at it!
             sv.Add(m_Inspector);

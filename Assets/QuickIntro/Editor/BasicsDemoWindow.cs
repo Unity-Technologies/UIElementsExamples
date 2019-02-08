@@ -1,9 +1,8 @@
 ﻿using UnityEditor;
 using UnityEngine;
-using UnityEditor.Experimental.UIElements;
-using UnityEngine.Experimental.UIElements;
-using UnityEngine.Experimental.UIElements.StyleEnums;
-using UnityEngine.Experimental.UIElements.StyleSheets;
+using UnityEditor.UIElements;
+using UnityEngine.UIElements;
+using UnityEngine.UIElements.StyleSheets;
 
 public class BasicsDemoWindow : EditorWindow
 {
@@ -15,7 +14,7 @@ public class BasicsDemoWindow : EditorWindow
         if (m_Tank == null)
             return;
 
-        var root = this.GetRootVisualContainer();
+        var root = rootVisualElement;
 
         #region Inline C#
         //
@@ -40,7 +39,7 @@ public class BasicsDemoWindow : EditorWindow
             style =
             {
                 fontSize = 20,
-                fontStyleAndWeight = FontStyle.Bold,
+                unityFontStyleAndWeight = FontStyle.Bold,
                 width = 140
             }
         });
@@ -52,7 +51,7 @@ public class BasicsDemoWindow : EditorWindow
             style =
             {
                 fontSize = 20,
-                fontStyleAndWeight = FontStyle.Bold,
+                unityFontStyleAndWeight = FontStyle.Bold,
                 flexGrow = 1
             }
         });
@@ -64,7 +63,7 @@ public class BasicsDemoWindow : EditorWindow
             style =
             {
                 fontSize = 20,
-                fontStyleAndWeight = FontStyle.Bold,
+                unityFontStyleAndWeight = FontStyle.Bold,
                 width = 100,
                 backgroundColor = Color.blue
             }
@@ -84,7 +83,7 @@ public class BasicsDemoWindow : EditorWindow
 
         var ussVE = new VisualElement() { name = "row" };
         ussVE.AddToClassList("container");
-        ussVE.AddStyleSheetPath("Basics/basics_styles");
+        ussVE.styleSheets.Add(Resources.Load<StyleSheet>("Basics/basics_styles"));
 
         ussVE.Add(new Label() { text = "USS" });
         ussVE.Add(new TextField() { value = m_Tank.tankName });
@@ -103,8 +102,8 @@ public class BasicsDemoWindow : EditorWindow
         //
 
         var visualTree = Resources.Load("Basics/basics_uxml") as VisualTreeAsset;
-        var uxmlVE = visualTree.CloneTree(null);
-        uxmlVE.AddStyleSheetPath("Basics/basics_styles");
+        var uxmlVE = visualTree.CloneTree();
+        uxmlVE.styleSheets.Add(Resources.Load<StyleSheet>("Basics/basics_styles"));
 
         root.Add(uxmlVE);
 
@@ -148,7 +147,7 @@ public class BasicsDemoWindow : EditorWindow
                     (e.target as TextField).value);
 
         integerFields.ForEach(field =>
-            field.OnValueChanged(
+            field.RegisterValueChangedCallback(
                 e => m_Tank.tankSize = e.newValue));
 
         //
@@ -186,7 +185,7 @@ public class BasicsDemoWindow : EditorWindow
         inspector.Query<PropertyField>().ForEach((pf) =>
         {
             pf.Q<Label>().RemoveFromHierarchy();
-            pf.Q(className: "unity-property-field-input").style.flexGrow = 1;
+            pf.Q(className: "unity-property-field__input").style.flexGrow = 1;
         });
 
         root.Add(inspector);
@@ -214,16 +213,16 @@ public class BasicsDemoWindow : EditorWindow
         #endregion IMGUI
 
         #region Background Image
-        root.clippingOptions = VisualElement.ClippingOptions.ClipContents;
+        root.style.overflow = Overflow.Hidden;
         var backgroundTexture = Resources.Load<Texture2D>("Basics/blue_tank");
         var background = new VisualElement()
         {
             name = "background",
             style = {
                 backgroundImage = backgroundTexture,
-                positionType = PositionType.Absolute,
-                positionBottom = 0,
-                positionRight = 0,
+                position = Position.Absolute,
+                bottom = 0,
+                right = 0,
                 width = 250,
                 height = 250
             }

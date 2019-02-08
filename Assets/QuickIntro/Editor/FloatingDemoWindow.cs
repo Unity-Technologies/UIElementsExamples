@@ -1,21 +1,20 @@
 ﻿using UnityEditor;
 using UnityEngine;
-using UnityEditor.Experimental.UIElements;
-using UnityEngine.Experimental.UIElements;
-using UnityEngine.Experimental.UIElements.StyleEnums;
+using UnityEditor.UIElements;
+using UnityEngine.UIElements;
 
 public class FloatingDemoWindow : EditorWindow
 {
     public void OnEnable()
     {
-        var root = this.GetRootVisualContainer();
+        var root = rootVisualElement;
 
         var visualTree = Resources.Load("Floating/floating_uxml") as VisualTreeAsset;
-        visualTree.CloneTree(root, null);
-        root.AddStyleSheetPath("Floating/floating_styles");
+        visualTree.CloneTree(root);
+        root.styleSheets.Add(Resources.Load<StyleSheet>("Floating/floating_styles"));
 
         // Makes it float.
-        root.Q("square").style.positionType = PositionType.Absolute;
+        root.Q("square").style.position = Position.Absolute;
 
         // Add Manipulators.
         root.Q("square").AddManipulator(new SquareDragger());
@@ -77,8 +76,8 @@ public class FloatingDemoWindow : EditorWindow
 
             Vector2 diff = e.localMousePosition - m_Start;
 
-            target.style.positionTop = target.layout.y + diff.y;
-            target.style.positionLeft = target.layout.x + diff.x;
+            target.style.top = target.layout.y + diff.y;
+            target.style.left = target.layout.x + diff.x;
 
             e.StopPropagation();
         }

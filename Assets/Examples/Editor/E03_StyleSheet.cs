@@ -1,8 +1,6 @@
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Experimental.UIElements;
-using UnityEditor.Experimental.UIElements;
-using UnityEngine.Experimental.UIElements.StyleEnums;
+using UnityEngine.UIElements;
 
 namespace UIElementsExamples
 {
@@ -25,13 +23,12 @@ namespace UIElementsExamples
 
         public void OnEnable()
         {
-            var root = this.GetRootVisualContainer();
-            root.AddStyleSheetPath("styles");
+            rootVisualElement.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Examples/Editor/styles.uss"));
 
             // Here we just take all layout properties and other to extract them in USS!
-            var boxes = new VisualContainer() { name = "boxesContainer" };
+            var boxes = new VisualElement() { name = "boxesContainer" };
             boxes.AddToClassList("horizontalContainer");
-            root.Add(boxes);
+            rootVisualElement.Add(boxes);
 
             for (int i = 0; i < m_Colors.Length; i++)
             {
@@ -48,15 +45,15 @@ namespace UIElementsExamples
             }
 
             // Some more advanced layout now!
-            var twoPlusOneContainer = new VisualContainer() { name = "2Plus1Container" };
+            var twoPlusOneContainer = new VisualElement() { name = "TwoPlusOneContainer" };
             twoPlusOneContainer.AddToClassList("horizontalContainer");
-            root.Add(twoPlusOneContainer);
+            rootVisualElement.Add(twoPlusOneContainer);
             twoPlusOneContainer.Add(new VisualElement() { name = "large" });
             twoPlusOneContainer.Add(new VisualElement() { name = "small" });
 
-            var wrapContainer = new VisualContainer() { name = "wrapContainer" };
+            var wrapContainer = new VisualElement() { name = "wrapContainer" };
             wrapContainer.AddToClassList("horizontalContainer");
-            root.Add(wrapContainer);
+            rootVisualElement.Add(wrapContainer);
 
             for (int i = 0; i < 20; i++)
             {

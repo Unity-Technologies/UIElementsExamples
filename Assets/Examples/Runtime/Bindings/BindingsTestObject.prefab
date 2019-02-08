@@ -1,0 +1,160 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &934396161209417785
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 934396161209418183}
+  - component: {fileID: 934396161209418182}
+  m_Layer: 0
+  m_Name: BindingsTestObject
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &934396161209418183
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 934396161209417785}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &934396161209418182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 934396161209417785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_GeneratorAsset: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: ba0019e6aae656449abaf1ff04b81615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  intField: 42
+  boolField: 1
+  floatField: 23.6
+  stringField: String field text.
+  colorField: {r: 0, g: 1, b: 0, a: 1}
+  unityObjectField: {fileID: 0}
+  materialField: {fileID: 0}
+  texture2DField: {fileID: 0}
+  shaderField: {fileID: 0}
+  layerMaskField:
+    serializedVersion: 2
+    m_Bits: 0
+  enumField: 0
+  vector2Field: {x: 0, y: 0}
+  vector3Field: {x: 0, y: 0, z: 0}
+  vector4Field: {x: 0, y: 0, z: 0, w: 0}
+  rectField:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  intArrayField: 00000000000000000000000000000000
+  floatArrayField:
+  - 0
+  - 0
+  - 0
+  - 0
+  charField: 121
+  animationCurveField:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  boundsField:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  gradientField:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  quaternionField: {x: 0, y: 0, z: 0, w: 0}
+  vector2IntField: {x: 0, y: 0}
+  vector3IntField: {x: 0, y: 0, z: 0}
+  rectIntField:
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  boundsIntRect:
+    m_Position: {x: 0, y: 0, z: 0}
+    m_Size: {x: 0, y: 0, z: 0}
+  listTInt: 010000000200000003000000
+  structField:
+    structIntField: 42
+    structFloatField: 23.6
+  structDefaultDrawer:
+    name: 
+    amount: 1
+    unit: 0
+  structDefaultDrawerArray:
+  - name: 
+    amount: 1
+    unit: 0
+  - name: 
+    amount: 1
+    unit: 0
+  - name: 
+    amount: 1
+    unit: 0
+  imguiCustomDrawer:
+    name: 
+    amount: 1
+    unit: 0
+  uiElementsCustomDrawer:
+    name: 
+    amount: 1
+    unit: 0
+  uiElementsCustomDrawerArray:
+  - name: 
+    amount: 1
+    unit: 0
+  - name: 
+    amount: 1
+    unit: 0
+  - name: 
+    amount: 1
+    unit: 0

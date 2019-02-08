@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Experimental.UIElements;
-using UnityEditor.Experimental.UIElements;
+using UnityEngine.UIElements;
+using UnityEditor.UIElements;
+
+using Toolbar = UnityEditor.UIElements.Toolbar;
+using PopupWindow = UnityEngine.UIElements.PopupWindow;
 
 namespace UIElementsExamples
 {
@@ -19,25 +22,22 @@ namespace UIElementsExamples
         [SerializeField]
         List<string> m_Tasks;
 
-        TextField m_TextField;
+        TextField m_TextInput;
         ScrollView m_TasksContainer;
 
         bool m_popupSearchFieldOn;
 
-        public void AddTaskOnReturnKey(KeyDownEvent e)
+        public void AddTask(ChangeEvent<string> e)
         {
-            if (e.keyCode == KeyCode.Return)
-            {
-                AddTask();
-                // Prevent the text field from handling this key.
-                e.StopPropagation();
-            }
+            AddTask();
+            // Prevent the text field from handling this key.
+            e.StopPropagation();
         }
 
         public void OnEnable()
         {
-            var root = this.GetRootVisualContainer();
-            root.AddStyleSheetPath("todolist");
+            var root = this.rootVisualElement;
+            root.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Examples/Editor/todolist.uss"));
 
             var toolbar = new Toolbar();
             root.Add(toolbar);
@@ -51,37 +51,42 @@ namespace UIElementsExamples
             var tgl = new ToolbarToggle { text = "Toggle" };
             toolbar.Add(tgl);
 
-            var spc2 = new ToolbarFlexSpacer { name = "flexSpacer1" };
+            var spc2 = new ToolbarSpacer() { name = "flexSpacer1" , flex = true };
             toolbar.Add(spc2);
 
             var menu = new ToolbarMenu { text = "Menu" };
-            menu.menu.AppendAction("Menu", a => {}, a => DropdownMenu.MenuAction.StatusFlags.Normal);
+            menu.menu.AppendAction("Default is never shown", a => {}, a => DropdownMenuAction.Status.None);
+            menu.menu.AppendAction("Normal menu", a => {}, a => DropdownMenuAction.Status.Normal);
+            menu.menu.AppendAction("Hidden is never shown", a => {}, a => DropdownMenuAction.Status.Hidden);
+            menu.menu.AppendAction("Checked menu", a => {}, a => DropdownMenuAction.Status.Checked);
+            menu.menu.AppendAction("Disabled menu", a => {}, a => DropdownMenuAction.Status.Disabled);
+            menu.menu.AppendAction("Disabled and checked menu", a => {}, a => DropdownMenuAction.Status.Disabled | DropdownMenuAction.Status.Checked);
             toolbar.Add(menu);
 
-            var spc3 = new ToolbarFlexSpacer { name = "flexSpacer2" };
+            var spc3 = new ToolbarSpacer() { name = "flexSpacer2", flex = true};
             toolbar.Add(spc3);
 
-            var popup = new ToolbarPopup { text = "Popup" };
-            popup.menu.AppendAction("Popup", a => {}, a => DropdownMenu.MenuAction.StatusFlags.Normal);
+            var popup = new ToolbarMenu { text = "Popup", variant = ToolbarMenu.Variant.Popup };
+            popup.menu.AppendAction("Popup", a => {}, a => DropdownMenuAction.Status.Normal);
             toolbar.Add(popup);
 
             var popupSearchField = new ToolbarPopupSearchField();
-            popupSearchField.OnValueChanged(OnSearchTextChanged);
+            popupSearchField.RegisterValueChangedCallback(OnSearchTextChanged);
             popupSearchField.menu.AppendAction(
                 "Popup Search Field",
                 a => m_popupSearchFieldOn = !m_popupSearchFieldOn,
                 a => m_popupSearchFieldOn ?
-                DropdownMenu.MenuAction.StatusFlags.Checked :
-                DropdownMenu.MenuAction.StatusFlags.Normal);
+                DropdownMenuAction.Status.Checked :
+                DropdownMenuAction.Status.Normal);
             toolbar.Add(popupSearchField);
 
-            var popupWindow = new UnityEngine.Experimental.UIElements.PopupWindow();
+            var popupWindow = new PopupWindow();
             popupWindow.text = "New Task";
             root.Add(popupWindow);
 
-            m_TextField = new TextField() { name = "input", persistenceKey = "input" };
-            popupWindow.Add(m_TextField);
-            m_TextField.RegisterCallback<KeyDownEvent>(AddTaskOnReturnKey);
+            m_TextInput = new TextField() { name = "input", viewDataKey = "input", isDelayed = true};
+            popupWindow.Add(m_TextInput);
+            m_TextInput.RegisterCallback<ChangeEvent<string>>(AddTask);
 
             var button = new Button(AddTask) { text = "Save task" };
             popupWindow.Add(button);
@@ -89,7 +94,6 @@ namespace UIElementsExamples
             var box = new Box();
             m_TasksContainer = new ScrollView();
             m_TasksContainer.showHorizontal = false;
-            m_TasksContainer.stretchContentWidth = true;
             box.Add(m_TasksContainer);
 
             root.Add(box);
@@ -117,7 +121,7 @@ namespace UIElementsExamples
         public VisualElement CreateTask(string name)
         {
             var task = new VisualElement();
-            task.focusIndex = 0;
+            task.focusable = true;
             task.name = name;
             task.AddToClassList("task");
 
@@ -135,7 +139,7 @@ namespace UIElementsExamples
         public void OnDisable()
         {
             m_Tasks = new List<string>();
-            foreach (VisualElement task in m_TasksContainer)
+            foreach (VisualElement task in m_TasksContainer.Children())
             {
                 m_Tasks.Add(task.name);
             }
@@ -143,13 +147,13 @@ namespace UIElementsExamples
 
         void AddTask()
         {
-            if (!string.IsNullOrEmpty(m_TextField.text))
+            if (!string.IsNullOrEmpty(m_TextInput.text))
             {
-                m_TasksContainer.contentContainer.Add(CreateTask(m_TextField.text));
-                m_TextField.value = "";
+                m_TasksContainer.contentContainer.Add(CreateTask(m_TextInput.text));
+                m_TextInput.value = "";
 
                 // Give focus back to text field.
-                m_TextField.Focus();
+                m_TextInput.Focus();
             }
         }
 
@@ -160,7 +164,7 @@ namespace UIElementsExamples
 
         void OnSearchTextChanged(ChangeEvent<string> evt)
         {
-            foreach (var task in m_TasksContainer)
+            foreach (var task in m_TasksContainer.Children())
             {
                 if (!string.IsNullOrEmpty(evt.newValue) && task.name.Contains(evt.newValue))
                 {

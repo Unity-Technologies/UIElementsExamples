@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Experimental.UIElements;
-using UnityEditor.Experimental.UIElements;
+using UnityEngine.UIElements;
+using UnityEditor.UIElements;
 
 namespace UIElementsExamples
 {
@@ -27,30 +27,29 @@ namespace UIElementsExamples
 
         public void OnEnable()
         {
-            // Each editor window contains a root VisualContainer object
-            VisualElement root = this.GetRootVisualContainer();
+            // Each editor window contains a root VisualElement object
+            VisualElement root = this.rootVisualElement;
 
-            // VisualContainer objects can contain VisualElement objects,
-            // which is the base class for VisualContainer and other controls
-            VisualContainer boxes = new VisualContainer();
+            // VisualElement objects can contain VisualElement objects,
+            // which is the base class for VisualElement and other controls
+            VisualElement boxes = new VisualElement();
             root.Add(boxes);
 
-            // The most basic way to place an element is to assign its rect
-            // although you should prefer layout in most cases
-            boxes.layout = new Rect(
-                kMargin,
-                kMargin,
-                kPadding * 2 + kBoxSize * m_Colors.Length,
-                kPadding * 2 + kBoxSize
-            );
+            // The most basic way to place an element is to use its styles
+            // although you should prefer implicit layout in most cases
+            boxes.style.position = Position.Absolute;
+            boxes.style.left = kMargin;
+            boxes.style.top = kMargin;
+            boxes.style.width = kPadding * 2 + kBoxSize * m_Colors.Length;
+            boxes.style.height = kPadding * 2 + kBoxSize;
 
             // The VisualTree is painted back-to-front following depth first traversal
             // thus a parent paints before its children
             boxes.style.backgroundColor = Color.grey;
 
-            // A VisualContainer will clip its descendants outside of its own
+            // A VisualElement will clip its descendants outside of its own
             // rect based on this property
-            boxes.clippingOptions = VisualElement.ClippingOptions.ClipContents;
+            boxes.style.overflow = Overflow.Hidden;
 
             for (int i = 0; i < m_Colors.Length; i++)
             {
@@ -58,8 +57,15 @@ namespace UIElementsExamples
                 // position rects are relative to the parent rect
                 boxes.Add(new VisualElement()
                 {
-                    layout = new Rect(kPadding + i * kBoxSize, kPadding, kBoxSize, kBoxSize),
-                    style = { backgroundColor = c }
+                    style =
+                    {
+                        position = Position.Absolute,
+                        left = kPadding + i * kBoxSize,
+                        top = kPadding,
+                        width = kBoxSize,
+                        height = kBoxSize,
+                        backgroundColor = c
+                    }
                 });
             }
         }

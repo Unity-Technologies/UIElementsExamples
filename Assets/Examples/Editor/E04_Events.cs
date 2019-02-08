@@ -1,7 +1,6 @@
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Experimental.UIElements;
-using UnityEditor.Experimental.UIElements;
+using UnityEngine.UIElements;
 
 namespace UIElementsExamples
 {
@@ -17,7 +16,7 @@ namespace UIElementsExamples
 
         public void OnEnable()
         {
-            var root = this.GetRootVisualContainer();
+            var root = this.rootVisualElement;
             root.AddManipulator(new MouseEventLogger());
             root.Add(new Label() { style = { backgroundColor = Color.red }, text = "Click me"});
         }

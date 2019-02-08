@@ -1,9 +1,6 @@
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Experimental.UIElements;
-using UnityEngine.Experimental.UIElements.StyleEnums;
-using UnityEditor.Experimental.UIElements;
-using UnityEngine.Experimental.UIElements.StyleSheets;
+using UnityEngine.UIElements;
 
 namespace UIElementsExamples
 {
@@ -30,18 +27,19 @@ namespace UIElementsExamples
         {
             // IMGUIContainer class lets you wrap OnGUI() function in containers
             // You can use UIElements layout to arrange them, and GUILayout inside them
-            var root = this.GetRootVisualContainer();
+            var root = this.rootVisualElement;
             root.style.flexDirection = FlexDirection.Row;
             root.Add(new IMGUIContainer(OnGUILeft) { style = { width = 200 } });
             m_RightContainer = new IMGUIContainer(OnGUIRight) {
+                cacheAsBitmap = true,
                 style =
                 {
+                    overflow = Overflow.Hidden,
                     flexGrow = 1.0f,
                     flexShrink = 0f,
                     flexBasis = 0f,
                     backgroundColor = EditorGUIUtility.isProSkin ? new Color(0.22f, 0.22f, 0.22f, 1) : new Color(0.76f, 0.76f, 0.76f, 1)
                 },
-                clippingOptions = VisualElement.ClippingOptions.ClipAndCacheContents
             };
             root.Add(m_RightContainer);
         }
@@ -73,8 +71,7 @@ namespace UIElementsExamples
 
         void OnGUIRight()
         {
-            m_RightContainer.clippingOptions = (VisualElement.ClippingOptions)EditorGUILayout.EnumPopup("Clipping", m_RightContainer.clippingOptions);
-
+            m_RightContainer.cacheAsBitmap = EditorGUILayout.Toggle("Cache as bitmap", m_RightContainer.cacheAsBitmap);
             GUILayout.Label("Base Settings", EditorStyles.boldLabel);
             myString = EditorGUILayout.TextField("Text Field", myString);
 

@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.Experimental.UIElements;
 using UnityEngine;
-using UnityEngine.Experimental.UIElements;
 
 namespace UIElementsExamples
 {

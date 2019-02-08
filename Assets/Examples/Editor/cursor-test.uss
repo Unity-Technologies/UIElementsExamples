@@ -1,13 +1,12 @@
-
 #root
 {
-    width: 1000;
-    height: 600;
+    width: 1000px;
+    height: 600px;
 }
 
 #root *
 {
-    font-size: 12;
+    font-size: 12px;
     color: #ffffff;
     -unity-text-align: upper-center;
 }
@@ -29,13 +28,13 @@
 {
     flex: 1;
     background-color: #112160;
-    padding-top: 10;
+    padding-top: 10px;
 }
 
 #header
 {
     background-color: #393636;
-    height: 50;
+    height: 50px;
 }
 
 #test-default-text
@@ -88,8 +87,8 @@
 
 #test-parent #child
 {
-    width: 180;
-    height: 100;
+    width: 180px;
+    height: 100px;
     background-color: #04500C;
 }
 
@@ -102,8 +101,8 @@
 
 #test-stack #child1
 {
-    width: 160;
-    height: 180;
+    width: 160px;
+    height: 180px;
     background-color: #04500C;
     justify-content: center;
     align-items: center;
@@ -112,8 +111,8 @@
 
 #test-stack #child2
 {
-    width: 120;
-    height: 120;
+    width: 120px;
+    height: 120px;
     background-color: #B5B316;
     justify-content: center;
     align-items: center;
@@ -122,8 +121,8 @@
 
 #test-stack #child3
 {
-    width: 60;
-    height: 60;
+    width: 60px;
+    height: 60px;
     background-color: #B56416;
     justify-content: center;
     align-items: center;
@@ -142,7 +141,7 @@
 
 #test-siblings *
 {
-    height: 60;
+    height: 60px;
     margin-left: 0;
     margin-top: 0;
     margin-right: 0;
@@ -151,7 +150,7 @@
 
 #test-siblings #child1
 {
-    margin-top: 50;
+    margin-top: 50px;
     background-color: #04500C;
     cursor: text;
 }
@@ -177,10 +176,10 @@
 
 #test-inherit #child
 {
-    width: 180;
-    height: 100;
+    width: 180px;
+    height: 100px;
     background-color: #04500C;
-   /*cursor: inherit; */
+    cursor: inherit;
 }
 
 #test-fallback

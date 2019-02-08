@@ -1,20 +1,20 @@
 ﻿using UnityEditor;
 using UnityEditor.Experimental;
-using UnityEditor.Experimental.UIElements;
+using UnityEditor.UIElements;
 using UnityEngine;
-using UnityEngine.Experimental.UIElements;
+using UnityEngine.UIElements;
 
 [CustomEditor(typeof(TankScript))]
-public class TankEditor : UIElementsEditor // : Editor
+public class TankEditor : Editor
 {
     // UIElements
     public override VisualElement CreateInspectorGUI()
     {
         var visualTree = Resources.Load("Inspector/inspector_uxml") as VisualTreeAsset;
-        var uxmlVE = visualTree.CloneTree(null);
+        var uxmlVE = visualTree.CloneTree();
 
-        uxmlVE.AddStyleSheetPath("Inspector/inspector_styles");
-        uxmlVE.AddStyleSheetPath("Basics/basics_styles");
+        uxmlVE.styleSheets.Add(Resources.Load<StyleSheet>("Inspector/inspector_styles"));
+        uxmlVE.styleSheets.Add(Resources.Load<StyleSheet>("Basics/basics_styles"));
 
         return uxmlVE;
     }

@@ -1,13 +1,10 @@
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEngine;
-using UnityEditor.Experimental.UIElements;
-using UnityEngine.Experimental.UIElements;
-using UnityEngine.Experimental.UIElements.StyleEnums;
 using System;
 using System.Linq;
-using UnityEngine.Experimental.UIElements.StyleSheets;
-using UnityEngine.StyleSheets;
+using System.Collections.Generic;
+
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace UIElementsExamples
 {
@@ -34,9 +31,8 @@ namespace UIElementsExamples
             }
         }
 
-        private void InitListView(ListView listView, string name)
+        private void InitListView(ListView listView)
         {
-            listView.persistenceKey = name;
             listView.selectionType = SelectionType.Multiple;
 
             listView.onItemChosen += obj => Debug.Log(obj);
@@ -49,14 +45,14 @@ namespace UIElementsExamples
 
         private void AddListView(ListView listView)
         {
-            VisualElement root = this.GetRootVisualContainer();
+            VisualElement root = this.rootVisualElement;
 
             var col = new VisualElement();
             col.style.flexGrow = 1f;
             col.style.flexShrink = 0f;
             col.style.flexBasis = 0f;
 
-            col.Add(new Label() { text = listView.persistenceKey });
+            col.Add(new Label() { text = listView.viewDataKey });
             col.Add(listView);
 
             root.Add(col);
@@ -66,7 +62,7 @@ namespace UIElementsExamples
         {
             const int itemCount = 1000;
 
-            VisualElement root = this.GetRootVisualContainer();
+            VisualElement root = this.rootVisualElement;
             root.style.flexDirection = FlexDirection.Row;
 
             var items = new List<Item>(itemCount);
@@ -90,25 +86,27 @@ namespace UIElementsExamples
 
             // Inline
             var inlineListView = new ListView(items, 30, makeItem, bindItem);
-            InitListView(inlineListView, "Inline_View");
+            inlineListView.viewDataKey = "Inline_View";
+            InitListView(inlineListView);
             AddListView(inlineListView);
 
             // USS
             var ussListView = new ListView();
-            ussListView.AddStyleSheetPath("styles");
-            InitListView(ussListView, "USS_View");
+            ussListView.viewDataKey = "USS_View";
+            ussListView.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Examples/Editor/styles.uss"));
+            InitListView(ussListView);
             ussListView.itemsSource = items;
             ussListView.makeItem = makeItem;
             ussListView.bindItem = bindItem;
             AddListView(ussListView);
 
             // XML
-            var visualTree = Resources.Load("listview") as VisualTreeAsset;
-            VisualElement tree = visualTree.CloneTree(null);
+            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Examples/Editor/listview.uxml");
+            VisualElement tree = visualTree.CloneTree();
             foreach (ListView xmlListView in tree.Children().ToList().Cast<ListView>())
             {
-                InitListView(xmlListView, xmlListView.name);
-                xmlListView.AddStyleSheetPath("styles");
+                InitListView(xmlListView);
+                xmlListView.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Examples/Editor/styles.uss"));
                 xmlListView.itemsSource = items;
                 xmlListView.makeItem = makeItem;
                 xmlListView.bindItem = bindItem;

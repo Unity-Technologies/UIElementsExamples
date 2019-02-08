@@ -1,9 +1,6 @@
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEditor.Experimental.UIElements;
-using UnityEngine.Experimental.UIElements;
-using UnityEngine.Experimental.UIElements.StyleEnums;
+using UnityEngine.UIElements;
 
 public class E08_Cursors : EditorWindow
 {
@@ -19,12 +16,11 @@ public class E08_Cursors : EditorWindow
 
     void OnEnable()
     {
-        var root = this.GetRootVisualContainer();
-        root.name = "root";
-        root.AddStyleSheetPath("cursor-test");
+        rootVisualElement.name = "root";
+        rootVisualElement.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Examples/Editor/cursor-test.uss"));
 
         m_TopContainer = new VisualElement() { name = "container" };
-        root.Add(m_TopContainer);
+        rootVisualElement.Add(m_TopContainer);
 
         m_TopContainer.Add(new CursorTestElement("test-default-text", "Default", "Text"));
         m_TopContainer.Add(new CursorTestElement("test-custom", "Custom texture", "Thumb up"));
@@ -32,12 +28,11 @@ public class E08_Cursors : EditorWindow
         m_TopContainer.Add(new CursorTestParent("test-parent", "Parent default"));
 
         m_BottomContainer = new VisualElement() { name = "container" };
-        root.Add(m_BottomContainer);
+        rootVisualElement.Add(m_BottomContainer);
 
         m_BottomContainer.Add(new CursorTestSiblings("test-siblings", "Siblings"));
         m_BottomContainer.Add(new CursorTestStack("test-stack", "Stack"));
         m_BottomContainer.Add(new CursorTestInherit("test-inherit", "Inherit (coming soon!)"));
-        m_BottomContainer.Add(new CursorTestCode("test-code", "From code"));
         m_BottomContainer.Add(new CursorTestElement("test-fallback", "Fallback", "Text"));
     }
 }
@@ -126,56 +121,5 @@ public class CursorTestInherit : CursorTestElement
         var label = new Label("Inherit cursor") { name = "child" };
         label.style.unityTextAlign = TextAnchor.MiddleCenter;
         m_Content.Add(label);
-    }
-}
-
-public class CursorTestCode : CursorTestElement
-{
-    private List<CursorStyle> m_Cursors = new List<CursorStyle>();
-    private int m_Index = 0;
-    private Label m_Label;
-    private Button m_Button;
-    private static string[] s_CursorNames = { "Text", "ArrowPlus", "FPS", "Pan", "ScaleArrow", "Thumb up"};
-
-    public CursorTestCode(string name, string header)
-        : base(name, header)
-    {
-        m_Cursors.Add(UIElementsEditorUtility.CreateDefaultCursorStyle(MouseCursor.Text));
-        m_Cursors.Add(UIElementsEditorUtility.CreateDefaultCursorStyle(MouseCursor.ArrowPlus));
-        m_Cursors.Add(UIElementsEditorUtility.CreateDefaultCursorStyle(MouseCursor.FPS));
-        m_Cursors.Add(UIElementsEditorUtility.CreateDefaultCursorStyle(MouseCursor.Pan));
-        m_Cursors.Add(UIElementsEditorUtility.CreateDefaultCursorStyle(MouseCursor.ScaleArrow));
-        Texture2D tex = (Texture2D)Resources.Load("thumb-up");
-        m_Cursors.Add(new CursorStyle() { texture = tex});
-
-        m_Label = new Label(s_CursorNames[m_Index]) { name = "child" };
-        m_Label.style.unityTextAlign = TextAnchor.MiddleCenter;
-        m_Label.style.width = 180;
-        m_Label.style.height = 100;
-        m_Label.style.marginTop = 30;
-        m_Label.style.backgroundColor = new Color(0.016f, 0.314f, 0.047f, 1.0f);
-        m_Label.style.cursor = m_Cursors[m_Index];
-
-        m_Button = new Button(ChangeCursor);
-        m_Button.text = "Change cursor";
-        m_Button.style.width = 120;
-        m_Button.style.height = 30;
-        m_Button.style.alignSelf = Align.Center;
-
-        m_Content.Add(m_Button);
-        m_Content.Add(m_Label);
-    }
-
-    private void ChangeCursor()
-    {
-        int index = m_Index;
-        while (index == m_Index)
-        {
-            index = Random.Range(0, m_Cursors.Count);
-        }
-
-        m_Index = index;
-        m_Label.style.cursor = m_Cursors[m_Index];
-        m_Label.text = s_CursorNames[m_Index];
     }
 }

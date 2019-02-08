@@ -1,0 +1,27 @@
+.comparerBox {
+    flex: 1;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-right-width: 2px;
+    padding: 2px;
+    border-color: #555;
+}
+
+.comparerBoxContainer {
+    flex-direction: row;
+}
+
+#main-scroll-view {
+    flex: 1;
+    border-top-width: 4px;
+    border-color: #fff;
+}
+
+#title-comparer-box {
+    margin-right: 16px;
+}
+
+#title-comparer-box Label {
+    -unity-font-style: bold;
+}

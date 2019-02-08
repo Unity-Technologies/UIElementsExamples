@@ -1,13 +1,11 @@
 using UnityEditor;
-using UnityEditor.Experimental;
-using UnityEditor.Experimental.UIElements;
-using UnityEngine;
-using UnityEngine.Experimental.UIElements;
+using UnityEditor.UIElements;
+using UnityEngine.UIElements;
 
 namespace UIElementsExamples
 {
     [CustomEditor(typeof(TestBehavior))]
-    public class TestBehaviorEditor : UIElementsEditor
+    public class TestBehaviorEditor : Editor
     {
         public override void OnInspectorGUI()
         {

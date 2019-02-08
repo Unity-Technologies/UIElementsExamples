@@ -1,0 +1,16 @@
+<UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:VisualElement name="compare-box" class="comparerBox">
+        <ui:Label name="compare-box-label" class="boxLabel" />
+        <ui:VisualElement class="comparerBoxSingle comparerBoxNormal">
+            <ui:Label text="Normal Inspectors (Custom or Default if no Custom provided)" class="boxLabel" />
+            <ui:VisualElement class="comparerBoxContainer">
+                <ui:PopupWindow text="IMGUI" class="comparerPopup" name="normal-imgui-popup">
+
+                </ui:PopupWindow>
+                <ui:PopupWindow text="UIElements" class="comparerPopup">
+                    <uie:InspectorElement name="uxml-created-inspector" />
+                </ui:PopupWindow>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</UXML>

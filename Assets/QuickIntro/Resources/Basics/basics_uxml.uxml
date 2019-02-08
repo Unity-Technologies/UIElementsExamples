@@ -1,4 +1,4 @@
-<UXML xmlns:ui="UnityEngine.Experimental.UIElements" xmlns:ue="UnityEditor.Experimental.UIElements">
+<UXML xmlns:ui="UnityEngine.UIElements" xmlns:ue="UnityEditor.UIElements">
     <ui:VisualElement name="row" class="container">
         <ui:Label text="UXML" />
         <ui:TextField />

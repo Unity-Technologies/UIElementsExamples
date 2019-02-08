@@ -6,24 +6,23 @@
 }
 
 .comparerBox > Label {
-    font-size: 16;
-    margin-bottom: 10;
+    font-size: 16px;
+    margin-bottom: 10px;
 }
 
 .boxLabel {
-    font-style: bold;
+    -unity-font-style: bold;
 }
-
 .comparerPopup {
     flex: 1;
 }
 
 .comparerBoxSingle {
     flex: 1;
-    margin-left: 10;
+    margin-left: 10px;
     margin-top: 0;
-    margin-right: 10;
-    margin-bottom: 10;
+    margin-right: 10px;
+    margin-bottom: 10px;
     background-color: rgb(64, 32, 32);
 }
 
@@ -32,12 +31,12 @@
 }
 
 .comparerBoxSingle > Label {
-    text-color: #fff;
+    color: #fff;
 }
 
 .comparerBoxContainer {
     flex: 1;
-    flex-direction: row;
+    flex-direction: column;
 }
 
 #main-scroll-view {

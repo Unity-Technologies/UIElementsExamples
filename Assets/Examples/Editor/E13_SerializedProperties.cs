@@ -1,6 +1,6 @@
 using UnityEditor;
-using UnityEditor.Experimental.UIElements;
-using UnityEngine.Experimental.UIElements;
+using UnityEditor.UIElements;
+using UnityEngine.UIElements;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -22,25 +22,24 @@ namespace UIElementsExamples
 
         public void OnEnable()
         {
-            var root = this.GetRootVisualContainer();
-            m_VSTree = Resources.Load("serialized-properties-comparer") as VisualTreeAsset;
-            root.AddStyleSheetPath("serialized-properties-comparer-style");
+            m_VSTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Examples/Editor/serialized-properties-comparer.uxml");
+
+            rootVisualElement.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Examples/Editor/serialized-properties-comparer-style.uss"));
 
             var button = new Button(Refresh) { text = "Refresh" };
-            root.Add(button);
+            rootVisualElement.Add(button);
 
             var titleRow = NewRow(
                 new Label() { text = "IMGUI" },
                 new Label() { text = "UIElements" });
             titleRow.name = "title-comparer-box";
-            root.Add(titleRow);
+            rootVisualElement.Add(titleRow);
 
             m_ScrollView = new ScrollView();
-            m_ScrollView.persistenceKey = "main-scroll-view";
+            m_ScrollView.viewDataKey = "main-scroll-view";
             m_ScrollView.name = "main-scroll-view";
-            m_ScrollView.stretchContentWidth = true;
             m_ScrollView.verticalScroller.slider.pageSize = 100;
-            root.Add(m_ScrollView);
+            rootVisualElement.Add(m_ScrollView);
 
             Refresh();
         }
@@ -49,7 +48,7 @@ namespace UIElementsExamples
         {
             if (!string.IsNullOrEmpty(m_IMGUIPropNeedsRelayout))
             {
-                var root = this.GetRootVisualContainer();
+                var root = this.rootVisualElement;
                 var container = root.Q<IMGUIContainer>(name: m_IMGUIPropNeedsRelayout);
                 RecomputeSize(container);
                 m_IMGUIPropNeedsRelayout = string.Empty;
@@ -68,13 +67,12 @@ namespace UIElementsExamples
 
         private VisualElement NewRow(VisualElement left, VisualElement right)
         {
-            Dictionary<string, VisualElement> comparerSlots = new Dictionary<string, VisualElement>();
-            var comparer = m_VSTree.CloneTree(comparerSlots);
+            var comparer = m_VSTree.CloneTree();
 
             if (left != null)
-                comparerSlots["left"].Add(left);
+                comparer.Q("left").Add(left);
             if (right != null)
-                comparerSlots["right"].Add(right);
+                comparer.Q("right").Add(right);
 
             return comparer;
         }
@@ -115,7 +113,7 @@ namespace UIElementsExamples
             // corresponding IMGUIContainer is forced to resize.
             foreach (var foldout in m_ScrollView.Query<Foldout>().ToList())
             {
-                foldout.OnValueChanged((e) =>
+                foldout.RegisterValueChangedCallback((e) =>
                 {
                     var fd = (e.target as Foldout);
                     if (fd == null)

@@ -1,9 +1,6 @@
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Experimental.UIElements;
-using UnityEditor.Experimental.UIElements;
-using UnityEngine.Experimental.UIElements.StyleEnums;
-using UnityEngine.Experimental.UIElements.StyleSheets;
+using UnityEngine.UIElements;
 
 namespace UIElementsExamples
 {
@@ -31,10 +28,10 @@ namespace UIElementsExamples
 
         public void OnEnable()
         {
-            var root = this.GetRootVisualContainer();
+            var root = this.rootVisualElement;
 
             // Let's now try to do an example similar to the 1st example
-            var boxes = new VisualContainer()
+            var boxes = new VisualElement()
             {
                 style =
                 {
@@ -49,6 +46,7 @@ namespace UIElementsExamples
                     paddingRight = kPadding,
                     paddingBottom = kPadding,
                     alignSelf = Align.FlexStart,
+                    flexShrink = 0f,
                     flexDirection = FlexDirection.Row // makes the container horizontal
                 }
             };
@@ -71,7 +69,7 @@ namespace UIElementsExamples
             }
 
             // Some more advanced layout now!
-            var twoPlusOneContainer = new VisualContainer()
+            var twoPlusOneContainer = new VisualElement()
             {
                 style =
                 {
@@ -82,6 +80,7 @@ namespace UIElementsExamples
                     // Example of flexibles elements with 70%-30% distribution
                     // this is possible thanks to the "flex" property
                     height = 100,
+                    flexShrink = 0,
                     flexDirection = FlexDirection.Row
                 }
             };
@@ -108,7 +107,7 @@ namespace UIElementsExamples
                 }
             });
 
-            var wrapContainer = new VisualContainer()
+            var wrapContainer = new VisualElement()
             {
                 style =
                 {
