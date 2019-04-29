@@ -4,12 +4,12 @@
 }
 
 Label {
-    background-color: rgb(80, 80, 80);
     width: 140;
 }
 
 .container {
-    background-color: rgb(80, 80, 80);
+    padding-left: 15;
+    padding-right: 6;
     margin-top: 6;
     margin-bottom: 6;
 }
@@ -20,6 +20,7 @@ Label {
 
 TextField {
     flex-grow: 1;
+    margin-right: 4;
 }
 
 TextField:hover {
