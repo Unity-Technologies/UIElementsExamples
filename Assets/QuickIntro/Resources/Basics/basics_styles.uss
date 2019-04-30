@@ -8,14 +8,15 @@ Label {
 }
 
 .container {
-    padding-left: 15;
-    padding-right: 6;
+    margin-left: 15;
+    margin-right: 6;
     margin-top: 6;
     margin-bottom: 6;
 }
 
 #row {
     flex-direction: row;
+    background-color: rgb(45, 45, 45);
 }
 
 TextField {

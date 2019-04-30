@@ -27,10 +27,10 @@ public class BasicsDemoWindow : EditorWindow
             {
                 marginTop = 6,
                 marginBottom = 6,
-                paddingLeft = 15,
-                paddingRight = 6,
+                marginLeft = 15,
+                marginRight = 6,
                 flexDirection = FlexDirection.Row,
-                backgroundColor = new Color(0.22f, 0.22f, 0.22f),
+                backgroundColor = new Color(0.18f, 0.18f, 0.18f),
             }
         };
 
