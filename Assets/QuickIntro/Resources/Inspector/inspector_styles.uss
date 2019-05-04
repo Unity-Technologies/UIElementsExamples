@@ -3,5 +3,9 @@
 }
 
 #planet-size-field {
-    width: 108;
+    width: 100;
+}
+
+.unity-property-field__label {
+    display: none;
 }

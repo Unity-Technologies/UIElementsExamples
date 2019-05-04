@@ -42,7 +42,7 @@ public class IMGUIDemoWindow : EditorWindow
 
         // Create row style state for the background color.
         var background = new Texture2D(1, 1);
-        background.SetPixel(0, 0, new Color(0.3f, 0.3f, 0.3f));
+        background.SetPixel(0, 0, new Color(0.18f, 0.18f, 0.18f));
         background.Apply();
         var state = new GUIStyleState();
         state.background = background;

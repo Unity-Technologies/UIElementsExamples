@@ -27,8 +27,10 @@ public class BasicsDemoWindow : EditorWindow
             {
                 marginTop = 6,
                 marginBottom = 6,
+                marginLeft = 15,
+                marginRight = 6,
                 flexDirection = FlexDirection.Row,
-                backgroundColor = new Color(0.3f, 0.3f, 0.3f),
+                backgroundColor = new Color(0.18f, 0.18f, 0.18f),
             }
         };
 
@@ -51,6 +53,7 @@ public class BasicsDemoWindow : EditorWindow
             style =
             {
                 fontSize = 20,
+                marginRight = 4,
                 unityFontStyleAndWeight = FontStyle.Bold,
                 flexGrow = 1
             }
