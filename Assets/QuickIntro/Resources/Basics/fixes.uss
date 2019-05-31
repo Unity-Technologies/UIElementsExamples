@@ -1,0 +1,14 @@
+.unity-inspector-element {
+    padding-left: 0px;
+    padding-top: 0px;
+    padding-right: 0px;
+    margin-bottom: 2px;
+}
+
+#unity-prefab-override-bars-container {
+    display: none;
+}
+
+.unity-inspector-element__custom-inspector-container #row {
+    padding-left: 4px;
+}

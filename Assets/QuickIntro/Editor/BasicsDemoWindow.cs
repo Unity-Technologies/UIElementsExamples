@@ -25,10 +25,8 @@ public class BasicsDemoWindow : EditorWindow
         {
             style =
             {
-                marginTop = 6,
-                marginBottom = 6,
-                marginLeft = 15,
-                marginRight = 6,
+                marginBottom = 2,
+                paddingLeft = 4,
                 flexDirection = FlexDirection.Row,
                 backgroundColor = new Color(0.18f, 0.18f, 0.18f),
             }
@@ -53,7 +51,6 @@ public class BasicsDemoWindow : EditorWindow
             style =
             {
                 fontSize = 20,
-                marginRight = 4,
                 unityFontStyleAndWeight = FontStyle.Bold,
                 flexGrow = 1
             }
@@ -106,7 +103,7 @@ public class BasicsDemoWindow : EditorWindow
 
         var visualTree = Resources.Load("Basics/basics_uxml") as VisualTreeAsset;
         var uxmlVE = visualTree.CloneTree();
-        uxmlVE.styleSheets.Add(Resources.Load<StyleSheet>("Basics/basics_styles"));
+        //uxmlVE.styleSheets.Add(Resources.Load<StyleSheet>("Basics/basics_styles"));
 
         root.Add(uxmlVE);
 
@@ -180,18 +177,12 @@ public class BasicsDemoWindow : EditorWindow
         //
         //
 
-        var inspector = new InspectorElement(m_Tank);
+        var boundVisualTree = Resources.Load("Inspector/inspector_uxml") as VisualTreeAsset;
+        var boundVE = boundVisualTree.CloneTree();
 
-        // TODO: Ignore this bit. It's to account for a bug.
-        // Once fixed, this code will not be necessary anymore.
-        inspector.RemoveFromClassList("unity-inspector");
-        inspector.Query<PropertyField>().ForEach((pf) =>
-        {
-            pf.Q<Label>().RemoveFromHierarchy();
-            pf.Q(className: "unity-property-field__input").style.flexGrow = 1;
-        });
+        boundVE.Bind(new SerializedObject(m_Tank));
 
-        root.Add(inspector);
+        root.Add(boundVE);
 
         //
         //
@@ -231,6 +222,8 @@ public class BasicsDemoWindow : EditorWindow
             }
         };
         root.Insert(0, background);
+        root.styleSheets.Add(Resources.Load<StyleSheet>("Basics/fixes"));
+        boundVE.styleSheets.Add(Resources.Load<StyleSheet>("Inspector/inspector_styles"));
         #endregion
     }
 

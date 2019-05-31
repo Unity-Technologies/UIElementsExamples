@@ -64,7 +64,7 @@ public class IMGUIDemoWindow : EditorWindow
             EditorGUILayout.LabelField(
                 "IMGUI",
                 labelStyle,
-                GUILayout.Width(140),
+                GUILayout.Width(136),
                 GUILayout.Height(labelStyle.fixedHeight));
 
             // Set font size and style.
@@ -89,7 +89,7 @@ public class IMGUIDemoWindow : EditorWindow
                 EditorGUILayout.IntField(
                     tank.tankSize,
                     fieldStyle,
-                    GUILayout.Width(100),
+                    GUILayout.Width(94),
                     GUILayout.Height(fieldStyle.fixedHeight));
         }
 

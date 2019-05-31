@@ -1,8 +1,8 @@
-#planet-name-field {
+#tank-name {
     flex-grow: 1;
 }
 
-#planet-size-field {
+#tank-size {
     width: 100;
 }
 

@@ -1,5 +1,6 @@
 <UXML xmlns:ui="UnityEngine.UIElements" xmlns:ue="UnityEditor.UIElements">
     <ui:VisualElement name="row" class="container">
+        <Style path="Basics/basics_styles" />
         <ui:Label text="UXML" />
         <ui:TextField />
         <ue:IntegerField />

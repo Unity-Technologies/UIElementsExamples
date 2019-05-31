@@ -4,14 +4,12 @@
 }
 
 Label {
-    width: 140;
+    width: 140px;
 }
 
 .container {
-    margin-left: 15;
-    margin-right: 6;
-    margin-top: 6;
-    margin-bottom: 6;
+    padding-left: 4px;
+    margin-bottom: 2px;
 }
 
 #row {
@@ -21,7 +19,6 @@ Label {
 
 TextField {
     flex-grow: 1;
-    margin-right: 4;
 }
 
 TextField:hover {

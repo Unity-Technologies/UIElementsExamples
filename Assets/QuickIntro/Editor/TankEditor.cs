@@ -4,7 +4,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[CustomEditor(typeof(TankScript))]
+//[CustomEditor(typeof(TankScript))]
 public class TankEditor : Editor
 {
     // UIElements
