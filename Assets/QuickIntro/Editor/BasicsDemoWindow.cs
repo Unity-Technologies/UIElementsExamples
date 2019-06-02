@@ -103,7 +103,6 @@ public class BasicsDemoWindow : EditorWindow
 
         var visualTree = Resources.Load("Basics/basics_uxml") as VisualTreeAsset;
         var uxmlVE = visualTree.CloneTree();
-        //uxmlVE.styleSheets.Add(Resources.Load<StyleSheet>("Basics/basics_styles"));
 
         root.Add(uxmlVE);
 
