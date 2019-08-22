@@ -44,7 +44,7 @@
 
 #test-custom
 {
-    cursor: url("thumb-up.png"), arrow;
+    cursor: url("thumb-up.png");
 }
 
 #test-hotspot
@@ -67,14 +67,14 @@
 #test-hotspot #child-center
 {
     flex: 1;
-    cursor: url("thumb-up.png") 12 12, arrow;
+    cursor: url("thumb-up.png") 12 12;
     background-color: #04500C;
 }
 
 #test-hotspot #child-bottom-right
 {
     flex: 1;
-    cursor: url("thumb-up.png") 24 24, arrow;
+    cursor: url("thumb-up.png") 24 24;
     background-color: #B5B316;
 }
 
@@ -116,7 +116,7 @@
     background-color: #B5B316;
     justify-content: center;
     align-items: center;
-    cursor: url("thumb-up.png"), arrow;
+    cursor: url("thumb-up.png");
 }
 
 #test-stack #child3
@@ -158,31 +158,11 @@
 #test-siblings #child2
 {
     background-color: #B5B316;
-    cursor: url("thumb-up.png"), arrow;
+    cursor: url("thumb-up.png");
 }
 
 #test-siblings #child3
 {
     background-color: #B56416;
     cursor: pan;
-}
-
-#test-inherit
-{
-    justify-content: center;
-    align-items: center;
-    cursor: fps;
-}
-
-#test-inherit #child
-{
-    width: 180px;
-    height: 100px;
-    background-color: #04500C;
-    cursor: inherit;
-}
-
-#test-fallback
-{
-    cursor: resource("non-existing-resource"), text;
 }

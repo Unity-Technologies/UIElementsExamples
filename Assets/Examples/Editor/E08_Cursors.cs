@@ -25,15 +25,13 @@ public class E08_Cursors : EditorWindow
         m_TopContainer.Add(new CursorTestElement("test-default-text", "Default", "Text"));
         m_TopContainer.Add(new CursorTestElement("test-custom", "Custom texture", "Thumb up"));
         m_TopContainer.Add(new CursorTestHotspot("test-hotspot", "Hotspot"));
-        m_TopContainer.Add(new CursorTestParent("test-parent", "Parent default"));
 
         m_BottomContainer = new VisualElement() { name = "container" };
         rootVisualElement.Add(m_BottomContainer);
 
+        m_BottomContainer.Add(new CursorTestParent("test-parent", "Parent default"));
         m_BottomContainer.Add(new CursorTestSiblings("test-siblings", "Siblings"));
         m_BottomContainer.Add(new CursorTestStack("test-stack", "Stack"));
-        m_BottomContainer.Add(new CursorTestInherit("test-inherit", "Inherit (coming soon!)"));
-        m_BottomContainer.Add(new CursorTestElement("test-fallback", "Fallback", "Text"));
     }
 }
 

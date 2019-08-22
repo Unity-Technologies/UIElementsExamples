@@ -1,6 +1,0 @@
-<UXML xmlns="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
-    <uie:TwoPaneSplitView fixed-pane-index="0" fixed-pane-initial-size="200" orientation="horizontal">
-        <VisualElement name="red" class="red" />
-        <VisualElement name="green" class="green" />
-    </uie:TwoPaneSplitView>
-</UXML>

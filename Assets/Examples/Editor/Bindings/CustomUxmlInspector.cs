@@ -1,21 +1,21 @@
-using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.UIElements;
+
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace  UnityEngine.UIElements
+
+namespace UIElementsExamples
 {
     class CustomUxmlInspector : VisualElement, IBindable
     {
         public CustomUxmlInspector()
         {
-            // The contents of this element is defined in Editor/Resources/custom-inspector.uxml
             var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Examples/Editor/Bindings/custom-inspector.uxml");
             visualTree.CloneTree(this);
 
-            this.styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Examples/Editor/Bindings/custom-inspector-style.uss"));
+            styleSheets.Add(AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Examples/Editor/Bindings/custom-inspector-style.uss")); //because of how Resources.Load works, the uxml and the uss can't have the same name
         }
 
         public void Inspect(GameObject obj)

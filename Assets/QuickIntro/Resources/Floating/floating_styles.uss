@@ -5,24 +5,21 @@
 
 #background {
     background-image: resource("Floating/sand");
-    width: 600;
-    height: 600;
+    width: 600px;
+    height: 600px;
     align-self: center;
 }
 
 #square {
     position: absolute;
-    top: 40;
-    left: 80;
-    width: 200;
-    height: 200;
+    top: 40px;
+    left: 80px;
+    width: 200px;
+    height: 200px;
     flex-direction: row;
 
     border-color: rgb(0, 0, 0);
-    border-bottom-width: 4;
-    border-top-width: 4;
-    border-right-width: 4;
-    border-left-width: 4;
+    border-width: 4px;
 }
 
 #content {
@@ -33,8 +30,8 @@
 
 #corner {
     position: absolute;
-    width: 40;
-    height: 40;
+    width: 40px;
+    height: 40px;
     bottom: 0;
     right: 0;
     background-color: rgb(0, 0, 0);

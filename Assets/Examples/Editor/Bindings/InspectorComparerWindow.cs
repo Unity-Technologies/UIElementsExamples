@@ -4,6 +4,7 @@ using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 using System.Linq;
 using System;
+using System.Reflection;
 using Object = UnityEngine.Object;
 using System.Collections.Generic;
 
@@ -139,6 +140,14 @@ namespace UIElementsExamples
             return editor;
         }
 
+        bool ShouldRethrowException(Exception exception)
+        {
+            while (exception is TargetInvocationException && exception.InnerException != null)
+                exception = exception.InnerException;
+
+            return exception is ExitGUIException;
+        }
+
         protected bool DoDrawCustomIMGUIInspector(Object target)
         {
             if (!ActiveEditorTracker.HasCustomEditor(target))
@@ -163,6 +172,11 @@ namespace UIElementsExamples
                 }
                 catch (Exception e)
                 {
+                    if (ShouldRethrowException(e))
+                    {
+                        throw;
+                    }
+
                     Debug.LogException(e);
                 }
             }

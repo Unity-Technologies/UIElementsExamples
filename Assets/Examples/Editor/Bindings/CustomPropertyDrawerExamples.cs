@@ -59,7 +59,7 @@ namespace UIElementsExamples
             }
 
             { // Create drawer using UXML
-                var vsTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Editor/Bindings/custom-drawer.uxml");
+                var vsTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Examples/Editor/Bindings/custom-drawer.uxml");
                 var drawer = vsTree.CloneTree(property.propertyPath);
                 drawer.Q<PopupWindow>().text = property.displayName + " - Using UXML";
                 container.Add(drawer);

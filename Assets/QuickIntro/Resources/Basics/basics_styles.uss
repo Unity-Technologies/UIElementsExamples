@@ -1,6 +1,6 @@
 * {
-    font-size: 20;
-    font-style: bold;
+    font-size: 20px;
+    -unity-font-style: bold;
 }
 
 Label {
@@ -26,6 +26,6 @@ TextField:hover {
 }
 
 IntegerField {
-    width: 100;
+    width: 100px;
     background-color: rgb(0, 0, 255);
 }

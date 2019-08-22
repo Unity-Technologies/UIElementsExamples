@@ -3,7 +3,7 @@
 }
 
 #tank-size {
-    width: 100;
+    width: 100px;
 }
 
 .unity-property-field__label {
