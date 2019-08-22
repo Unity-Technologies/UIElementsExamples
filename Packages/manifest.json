@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.unity.ui.builder": "0.6.1-preview",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.ads": "2.0.8",
