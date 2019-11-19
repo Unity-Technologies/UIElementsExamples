@@ -1,6 +1,6 @@
 # About
 
-The examples here have only been tested on: **Unity 2019.2.0f1**
+The examples here have only been tested on: **Unity 2019.3.0b7**
 
 There are two groups of example code in this project:
 
