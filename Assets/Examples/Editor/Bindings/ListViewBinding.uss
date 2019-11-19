@@ -1,0 +1,11 @@
+.container {
+    flex-grow:1;
+}
+
+.horizontal{
+    flex-direction:row;
+}
+
+ListView {
+    flex-grow:1;
+}

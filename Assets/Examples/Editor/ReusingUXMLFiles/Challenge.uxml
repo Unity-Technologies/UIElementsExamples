@@ -1,0 +1,15 @@
+<UXML xmlns="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <Template src="PlayerScore.uxml" name="PlayerScore" />
+    <Label text="This example reuses the same template to display some player information" />
+    <VisualElement class="challenge">
+        <Style src="Challenge.uss" />
+        <Instance name="player1" template="PlayerScore">
+            <AttributeOverrides element-name="player-name-label" text="Matthieu" />
+            <AttributeOverrides element-name="player-score-label" text="0 pts" />
+        </Instance>
+        <Instance name="player2" template="PlayerScore">
+            <AttributeOverrides element-name="player-name-label" text="Antoine" />
+            <AttributeOverrides element-name="player-score-label" text="21 pts" />
+        </Instance>
+    </VisualElement>
+</UXML>

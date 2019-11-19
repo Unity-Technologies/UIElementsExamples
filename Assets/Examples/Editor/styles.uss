@@ -76,3 +76,19 @@ TreeView {
     flex: 1;
     overflow: hidden;
 }
+
+.element {
+    flex: 1 1 100px;
+    background-color: #555555;
+    border-bottom-width: 1px;
+    border-color: white;
+    justify-content: center;
+    align-items: center;
+}
+
+.element Label {
+    background-color: #000000;
+    color: #999999;
+    -unity-text-align: middle-center;
+    flex: 0 0 auto;
+}

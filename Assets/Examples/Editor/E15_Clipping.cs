@@ -102,7 +102,10 @@ namespace UIElementsExamples
                     borderTopWidth = 1,
                     borderLeftWidth = 1,
                     borderRightWidth = 1,
-                    borderColor = Color.red,
+                    borderTopColor = Color.red,
+                    borderBottomColor = Color.red,
+                    borderRightColor = Color.red,
+                    borderLeftColor = Color.red
                 }
             };
             root.Add(outer);

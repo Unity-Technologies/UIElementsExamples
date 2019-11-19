@@ -1,0 +1,10 @@
+<UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" >
+    <ui:VisualElement name="canvas"/>
+    <ui:VisualElement name="container">
+        <ui:VisualElement name="value-container">
+            <uie:CurveField label="Custom Curve"/>
+            <uie:IntegerField label="Duration"/>
+        </ui:VisualElement>
+        <ui:Button text="Start" name="start-button"/>
+    </ui:VisualElement>
+</UXML>

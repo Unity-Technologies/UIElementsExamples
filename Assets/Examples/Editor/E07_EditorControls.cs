@@ -28,6 +28,14 @@ namespace UIElementsExamples
             SixWithAVeryLOnnnnnnnnnnnnnnnnnnnngEnumName = 6
         }
 
+        [Flags]
+        private enum EnumFlagValues
+        {
+            First = 1,
+            Second = 2,
+            Third = 4
+        }
+
         private class SomeClass
         {
             public string Name { get; private set; }
@@ -154,8 +162,8 @@ namespace UIElementsExamples
 
             if (EditorGUIUtility.isProSkin)
             {
-                m_IMGUIContainer.style.backgroundColor = new Color(0.30f, 0.30f, 0.30f);
-                m_VisualElementContainer.style.backgroundColor = new Color(0.30f, 0.30f, 0.30f);
+                m_IMGUIContainer.style.backgroundColor = new Color(0.24f, 0.24f, 0.24f);
+                m_VisualElementContainer.style.backgroundColor = new Color(0.24f, 0.24f, 0.24f);
             }
             else
             {
@@ -220,6 +228,7 @@ namespace UIElementsExamples
         FloatField m_FloatField;
         DoubleField m_DoubleField;
         EnumField m_EnumField;
+        EnumFlagsField m_EnumFlagsField;
         TextField m_TextField;
         TextField m_PasswordField;
         TextField m_MultiLineTextField;
@@ -247,6 +256,8 @@ namespace UIElementsExamples
 
         SliderInt m_SliderProgressBar;
         ProgressBar m_ProgressBar;
+        ScrollView m_ScrollViewDisplay;
+        Slider m_verticalSlider;
 
         void CreateUIElements()
         {
@@ -260,7 +271,10 @@ namespace UIElementsExamples
                 }
             };
 
-            m_VisualElementContainer.Add(new Label("VisualElements Container"));
+            var label = new Label("VisualElements Container");
+            label.style.marginTop = 2;
+            label.style.marginBottom = 2;
+            m_VisualElementContainer.Add(label);
 
 
             var curveX = AnimationCurve.Linear(0, 0, 1, 0);
@@ -279,6 +293,8 @@ namespace UIElementsExamples
             m_VisualElementContainer.Add(m_FloatField = new FloatField());
             m_VisualElementContainer.Add(m_DoubleField = new DoubleField());
             m_VisualElementContainer.Add(m_EnumField = new EnumField(EnumValues.Two));
+            m_VisualElementContainer.Add(m_EnumFlagsField = new EnumFlagsField(EnumFlagValues.Second));
+
             m_VisualElementContainer.Add(m_TextField = new TextField());
             m_VisualElementContainer.Add(m_PasswordField = new TextField() { isPasswordField = true, maskChar = '*' });
             m_VisualElementContainer.Add(m_Vector3Field = new Vector3Field());
@@ -336,6 +352,12 @@ namespace UIElementsExamples
             m_ProgressBar.style.marginBottom = 2f;
 
             m_VisualElementContainer.Add(m_GradientField = new GradientField());
+
+            var visualElementHorizontal = new VisualElement(){style = { flexDirection = FlexDirection.Row, marginLeft = 3, marginBottom = 2}};
+            m_VisualElementContainer.Add(visualElementHorizontal);
+            visualElementHorizontal.Add(m_ScrollViewDisplay = new ScrollView(ScrollViewMode.VerticalAndHorizontal) { style = {width = 100, height = 100, backgroundColor = new Color(0f, 0f, 0f, 0.1f) } }); // color to spot wrong padding/margin
+            m_ScrollViewDisplay.Add(new Label("ScrollBars"){style = { width = 200, height = 200 } });
+            visualElementHorizontal.Add(m_verticalSlider = new Slider(0, 10, SliderDirection.Vertical) { style = { backgroundColor = new Color(0f, 0f, 0f, 0.05f) } }); // color to spot wrong padding/margin
             RefreshUIElements();
         }
 
@@ -347,6 +369,7 @@ namespace UIElementsExamples
             m_FloatField.label = m_ShowLabelOnFields ? typeof(FloatField).Name : null;
             m_DoubleField.label = m_ShowLabelOnFields ? typeof(DoubleField).Name : null;
             m_EnumField.label = m_ShowLabelOnFields ? typeof(EnumField).Name : null;
+            m_EnumFlagsField.label = m_ShowLabelOnFields ? typeof(EnumFlagsField).Name : null;
             m_TextField.label = m_ShowLabelOnFields ? typeof(TextField).Name : null;
             m_PasswordField.label = m_ShowLabelOnFields ? typeof(TextField).Name : null;
             m_Vector3Field.label = m_ShowLabelOnFields ? typeof(Vector3Field).Name : null;
@@ -381,6 +404,7 @@ namespace UIElementsExamples
         float m_FloatFieldValue;
         double m_DoubleFieldValue;
         EnumValues m_EnumValuesFieldValue = EnumValues.Two;
+        EnumFlagValues m_EnumFlagValuesFieldValue = EnumFlagValues.Second;
         string m_TextFieldValue;
         string m_PasswordFieldValue;
         Vector3 m_Vector3FieldValue;
@@ -414,6 +438,9 @@ namespace UIElementsExamples
 
         bool m_ToggleRightValue = false;
 
+        Vector2 m_scrollViewPosition;
+        float m_verticalSliderValue;
+
         void OnGUIForLeftContainer()
         {
             // the 330 is from Editor.k_WideModeMinWidth, see InspectorWindow.cs for the code doing it for the IMGUI Inspector.
@@ -427,6 +454,8 @@ namespace UIElementsExamples
                 m_FloatFieldValue = EditorGUILayout.FloatField("FloatField", m_FloatFieldValue);
                 m_DoubleFieldValue = EditorGUILayout.DoubleField("DoubleField", m_DoubleFieldValue);
                 m_EnumValuesFieldValue = (EnumValues)EditorGUILayout.EnumPopup("EnumPopup", m_EnumValuesFieldValue);
+                m_EnumFlagValuesFieldValue = (EnumFlagValues)EditorGUILayout.EnumFlagsField("EnumFlagsField", m_EnumFlagValuesFieldValue);
+
                 m_TextFieldValue = EditorGUILayout.TextField("TextField", m_TextFieldValue);
                 m_PasswordFieldValue = EditorGUILayout.PasswordField("PasswordField", m_PasswordFieldValue);
                 m_Vector3FieldValue = EditorGUILayout.Vector3Field("Vector3Field", m_Vector3FieldValue);
@@ -456,6 +485,8 @@ namespace UIElementsExamples
                 m_FloatFieldValue = EditorGUILayout.FloatField(m_FloatFieldValue);
                 m_DoubleFieldValue = EditorGUILayout.DoubleField(m_DoubleFieldValue);
                 m_EnumValuesFieldValue = (EnumValues)EditorGUILayout.EnumPopup(m_EnumValuesFieldValue);
+                m_EnumFlagValuesFieldValue = (EnumFlagValues)EditorGUILayout.EnumFlagsField(m_EnumFlagValuesFieldValue);
+
                 m_TextFieldValue = EditorGUILayout.TextField(m_TextFieldValue);
                 m_PasswordFieldValue = EditorGUILayout.PasswordField(m_PasswordFieldValue);
                 m_Vector3FieldValue = EditorGUILayout.Vector3Field("Vector3Field", m_Vector3FieldValue);
@@ -496,6 +527,12 @@ namespace UIElementsExamples
                 EditorGUILayout.IntSlider(SliderProgressTestProperty, 0, 100, new GUIContent("IntSlider"));
                 ProgressBar(SliderProgressTestProperty.intValue / 100.0f, "Progress Bar");
                 m_ColorFieldValue = EditorGUILayout.ColorField("ColorField", m_ColorFieldValue);
+                EditorGUILayout.BeginHorizontal();
+                m_scrollViewPosition = EditorGUILayout.BeginScrollView(m_scrollViewPosition, false, false, GUILayout.MaxWidth(100), GUILayout.MaxHeight(100));
+                EditorGUILayout.LabelField("ScrollBars", GUILayout.Height(100),  GUILayout.Height(200));
+                EditorGUILayout.EndScrollView();
+                m_verticalSliderValue = GUILayout.VerticalSlider(m_verticalSliderValue, 0, 30, GUILayout.Height(100), GUILayout.Width(50));
+                EditorGUILayout.EndHorizontal();
             }
             else
             {
@@ -505,6 +542,12 @@ namespace UIElementsExamples
                 EditorGUILayout.IntSlider(SliderProgressTestProperty, 0, 100);
                 ProgressBar(SliderProgressTestProperty.intValue / 100.0f, "Progress Bar");
                 m_ColorFieldValue = EditorGUILayout.ColorField(m_ColorFieldValue);
+                EditorGUILayout.BeginHorizontal();
+                m_scrollViewPosition = EditorGUILayout.BeginScrollView(m_scrollViewPosition, false, false, GUILayout.MaxWidth(100), GUILayout.MaxHeight(100));
+                EditorGUILayout.LabelField("ScrollBars", GUILayout.Height(100), GUILayout.Height(200));
+                EditorGUILayout.EndScrollView();
+                m_verticalSliderValue = GUILayout.VerticalSlider(m_verticalSliderValue, 0, 30, GUILayout.Height(100), GUILayout.Width(50));
+                EditorGUILayout.EndHorizontal();
             }
             SliderProgressTestSO.ApplyModifiedProperties();
         }

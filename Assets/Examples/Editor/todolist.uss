@@ -1,7 +1,3 @@
-.unity-base-text-field {
-    height:16px;
-}
-
 .unity-scroll-view {
     flex:1 0 0;
 }

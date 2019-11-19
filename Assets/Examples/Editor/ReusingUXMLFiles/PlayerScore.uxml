@@ -1,5 +1,5 @@
 <UXML xmlns="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
-    <Template path="Assets/Examples/Editor/UXMLAttributeOverrides/PlayerAvatar.uxml" name="PlayerAvatar" />
+    <Template src="PlayerAvatar.uxml" name="PlayerAvatar" />
     <Instance template="PlayerAvatar">
         <AttributeOverrides element-name="player-name-label" text="default player" />
     </Instance>

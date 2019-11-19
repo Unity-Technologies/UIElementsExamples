@@ -79,6 +79,9 @@ namespace UIElementsExamples
                 DropdownMenuAction.Status.Checked :
                 DropdownMenuAction.Status.Normal);
             toolbar.Add(popupSearchField);
+            var searchField = new ToolbarSearchField();
+            searchField.RegisterValueChangedCallback(OnSearchTextChanged);
+            toolbar.Add(searchField);
 
             var popupWindow = new PopupWindow();
             popupWindow.text = "New Task";

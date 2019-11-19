@@ -1,0 +1,31 @@
+.challenge {
+    flex-direction: row;
+}
+
+.challenge > * {
+    flex: 1 0 0px;
+}
+
+#player1 .unity-image {
+    --unity-image: url("flash.png");
+    position: absolute;
+}
+
+#player2 .unity-image {
+    --unity-image: url("reverse_flash.png");
+    position: absolute;
+}
+
+
+#player-name-label {
+    font-size: 24px;
+    color: black;
+    -unity-font-style: bold;
+}
+
+
+#player-score-label {
+    font-size: 36px;
+    color: white;
+    -unity-font-style: bold;
+}

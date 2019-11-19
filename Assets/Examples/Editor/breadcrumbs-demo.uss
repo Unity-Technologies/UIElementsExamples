@@ -1,0 +1,27 @@
+.wishlist-title {
+    font-size: 24px;
+    margin-bottom: 5px;
+    margin-top: 15px;
+    -unity-text-align: middle-center;
+}
+
+.wishlist-item {
+    margin: 5px 20px;
+    font-size: 16px;
+}
+
+.unity-base-text-field {
+    height:16px;
+}
+
+.unity-scroll-view {
+    flex:1 0 0;
+}
+
+.unity-box {
+    flex:1 0 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+}

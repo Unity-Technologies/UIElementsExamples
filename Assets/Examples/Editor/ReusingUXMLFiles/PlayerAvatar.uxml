@@ -1,3 +1,4 @@
 <UXML xmlns="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <Image />
     <Label name="player-name-label" text="default name" />
 </UXML>

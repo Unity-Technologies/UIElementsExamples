@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<engine:UXML
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:engine="UnityEngine.UIElements"
+    xmlns:editor="UnityEditor.UIElements"
+    xsi:noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd"
+>
+<engine:VisualElement class="container">
+    <engine:Label text="ListView Binding example" />
+        <engine:VisualElement name="Horizontal" class="horizontal container">
+            <engine:VisualElement class="container">
+                <engine:Label text="First view" />
+                <engine:ListView name="first-view" binding-path="intArrayField"/>
+                <engine:Button name="random-button" text="Randomize Values" />
+            </engine:VisualElement>
+            <engine:VisualElement class="container">
+                <engine:Label text="Second View (same data)" />
+                <engine:ListView name="second-view" binding-path="intArrayField"/>
+                <engine:Button name="reset-button" text="Reset Values" />
+            </engine:VisualElement>
+        </engine:VisualElement>
+    <engine:Button name="dump-button" text="Print Values to Console"/>
+    <engine:Label name="status" text=""/>
+</engine:VisualElement>
+</engine:UXML>
