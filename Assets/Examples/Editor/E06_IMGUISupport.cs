@@ -31,7 +31,6 @@ namespace UIElementsExamples
             root.style.flexDirection = FlexDirection.Row;
             root.Add(new IMGUIContainer(OnGUILeft) { style = { width = 200 } });
             m_RightContainer = new IMGUIContainer(OnGUIRight) {
-                cacheAsBitmap = true,
                 style =
                 {
                     overflow = Overflow.Hidden,
@@ -71,7 +70,6 @@ namespace UIElementsExamples
 
         void OnGUIRight()
         {
-            m_RightContainer.cacheAsBitmap = EditorGUILayout.Toggle("Cache as bitmap", m_RightContainer.cacheAsBitmap);
             GUILayout.Label("Base Settings", EditorStyles.boldLabel);
             myString = EditorGUILayout.TextField("Text Field", myString);
 

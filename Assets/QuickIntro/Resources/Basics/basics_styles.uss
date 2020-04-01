@@ -14,18 +14,17 @@ Label {
 
 #row {
     flex-direction: row;
-    background-color: rgb(45, 45, 45);
+    background-color: rgb(45, 71, 45);
 }
 
 TextField {
     flex-grow: 1;
 }
 
-TextField:hover {
+#row:hover {
     background-color: rgb(255, 255, 0);
 }
 
 IntegerField {
     width: 100px;
-    background-color: rgb(0, 0, 255);
 }

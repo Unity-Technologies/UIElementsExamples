@@ -42,7 +42,7 @@ public class IMGUIDemoWindow : EditorWindow
 
         // Create row style state for the background color.
         var background = new Texture2D(1, 1);
-        background.SetPixel(0, 0, new Color(0.18f, 0.18f, 0.18f));
+        background.SetPixel(0, 0, new Color(0.18f, 0.28f, 0.18f));
         background.Apply();
         var state = new GUIStyleState();
         state.background = background;
@@ -52,45 +52,57 @@ public class IMGUIDemoWindow : EditorWindow
         rowStyle.margin = new RectOffset(0, 0, 6, 6);
         rowStyle.normal = state;
 
-        using (var rowScope = new GUILayout.HorizontalScope(rowStyle))
+        // Determine TextField background color from mouse position.
+        var rect = EditorGUILayout.GetControlRect();
+        if (rect.Contains(Event.current.mousePosition))
         {
-            // Create label style from the default skin.
-            var labelStyle = new GUIStyle(GUI.skin.label);
-            labelStyle.fontSize = 20;
-            labelStyle.fontStyle = FontStyle.Bold;
-            labelStyle.fixedHeight = labelStyle.CalcHeight(GUIContent.none, 1);
+            background.SetPixel(0, 0, Color.yellow);
+            background.Apply();
+            state.background = background;
+        }
 
-            // Draw the label.
-            EditorGUILayout.LabelField(
-                "IMGUI",
-                labelStyle,
-                GUILayout.Width(136),
-                GUILayout.Height(labelStyle.fixedHeight));
+        using (var scope = new GUI.GroupScope(rect, rowStyle))
+        {
+            using (var rowScope = new GUILayout.HorizontalScope(rowStyle))
+            {
+                // Create label style from the default skin.
+                var labelStyle = new GUIStyle(GUI.skin.label);
+                labelStyle.fontSize = 20;
+                labelStyle.fontStyle = FontStyle.Bold;
+                labelStyle.fixedHeight = labelStyle.CalcHeight(GUIContent.none, 1);
 
-            // Set font size and style.
-            var fieldStyle = new GUIStyle(GUI.skin.textField);
-            fieldStyle.fontSize = 20;
-            fieldStyle.fontStyle = FontStyle.Bold;
-            fieldStyle.fixedHeight = fieldStyle.CalcHeight(GUIContent.none, 1);
+                // Draw the label.
+                EditorGUILayout.LabelField(
+                    "IMGUI",
+                    labelStyle,
+                    GUILayout.Width(136),
+                    GUILayout.Height(labelStyle.fixedHeight));
 
-            // Determine TextField background color from mouse position.
-            var rect = EditorGUILayout.GetControlRect(GUILayout.MinWidth(0.0f));
-            rect.height = fieldStyle.fixedHeight;
-            if (rect.Contains(Event.current.mousePosition))
-                GUI.backgroundColor = Color.yellow;
+                // Set font size and style.
+                var fieldStyle = new GUIStyle(GUI.skin.textField);
+                fieldStyle.fontSize = 20;
+                fieldStyle.fontStyle = FontStyle.Bold;
+                fieldStyle.fixedHeight = fieldStyle.CalcHeight(GUIContent.none, 1);
 
-            // Draw TextField
-            tank.tankName =
-                EditorGUI.TextField(rect, tank.tankName, fieldStyle);
+                // Determine TextField background color from mouse position.
+                var rect2 = EditorGUILayout.GetControlRect(GUILayout.MinWidth(0.0f));
+                rect2.height = fieldStyle.fixedHeight;
+                if (rect2.Contains(Event.current.mousePosition))
+                    GUI.backgroundColor = Color.yellow;
 
-            // Draw IntField
-            GUI.backgroundColor = Color.blue;
-            tank.tankSize =
-                EditorGUILayout.IntField(
-                    tank.tankSize,
-                    fieldStyle,
-                    GUILayout.Width(94),
-                    GUILayout.Height(fieldStyle.fixedHeight));
+                // Draw TextField
+                tank.tankName =
+                    EditorGUI.TextField(rect, tank.tankName, fieldStyle);
+
+                // Draw IntField
+                GUI.backgroundColor = Color.blue;
+                tank.tankSize =
+                    EditorGUILayout.IntField(
+                        tank.tankSize,
+                        fieldStyle,
+                        GUILayout.Width(94),
+                        GUILayout.Height(fieldStyle.fixedHeight));
+            }
         }
 
         // Restore global state.

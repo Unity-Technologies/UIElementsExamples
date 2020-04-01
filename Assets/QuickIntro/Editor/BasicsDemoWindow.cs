@@ -28,7 +28,7 @@ public class BasicsDemoWindow : EditorWindow
                 marginBottom = 2,
                 paddingLeft = 4,
                 flexDirection = FlexDirection.Row,
-                backgroundColor = new Color(0.18f, 0.18f, 0.18f),
+                backgroundColor = new Color(0.18f, 0.28f, 0.18f),
             }
         };
 
@@ -64,8 +64,7 @@ public class BasicsDemoWindow : EditorWindow
             {
                 fontSize = 20,
                 unityFontStyleAndWeight = FontStyle.Bold,
-                width = 100,
-                backgroundColor = Color.blue
+                width = 100
             }
         });
 
@@ -131,13 +130,13 @@ public class BasicsDemoWindow : EditorWindow
         //
         //
 
-        inlineVE.Q<TextField>().RegisterCallback<MouseEnterEvent>(
+        inlineVE.RegisterCallback<MouseEnterEvent>(
             e => (e.target as VisualElement)
                 .style.backgroundColor = Color.yellow);
 
-        inlineVE.Q<TextField>().RegisterCallback<MouseLeaveEvent>(
+        inlineVE.RegisterCallback<MouseLeaveEvent>(
             e => (e.target as VisualElement)
-                .style.backgroundColor = Color.clear);
+                .style.backgroundColor = new Color(0.18f, 0.28f, 0.18f));
 
         var textFieldList = textFields.ToList();
         foreach (var field in textFieldList)
