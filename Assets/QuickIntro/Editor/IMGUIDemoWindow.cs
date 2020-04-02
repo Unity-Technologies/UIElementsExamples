@@ -1,10 +1,62 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEditor;
 using UnityEngine;
 
 public class IMGUIDemoWindow : EditorWindow
 {
+    #region Styles
+    //
+    //
+    //
+
+    // define GUIStyles in static class so they are initialized on first access
+    static class Styles
+    {
+        public static readonly Color rowNormalColor = new Color32(45, 71, 45, 255);
+        public static readonly Color rowHoverColor = new Color32(255, 255, 0, 255);
+
+        public static readonly GUIStyle intField = new GUIStyle(GUI.skin.textField)
+        {
+            fontSize = 20,
+            fontStyle = FontStyle.Bold,
+            margin = new RectOffset { top = 1, bottom = 1, left = 4, right = 4 },
+            fixedWidth = 100f
+        };
+        public static readonly GUIStyle label = new GUIStyle(GUI.skin.label)
+        {
+            fontSize = 20,
+            fontStyle = FontStyle.Bold,
+            margin = new RectOffset { top = 1, bottom = 1, left = 4, right = 4 },
+            fixedWidth = 140
+        };
+        public static readonly GUIStyle row = new GUIStyle
+        {
+            normal = new GUIStyleState { background = Texture2D.whiteTexture },
+            margin = new RectOffset { bottom = 2 },
+            padding = new RectOffset { left = 4 }
+        };
+        public static readonly GUIStyle textField = new GUIStyle(GUI.skin.textField)
+        {
+            fontSize = 20,
+            fontStyle = FontStyle.Bold,
+            margin = new RectOffset { top = 1, bottom = 1, left = 4, right = 4 }
+        };
+
+        static Styles()
+        {
+            // initialize fixed heights (based on font size, padding, etc)
+            intField.fixedHeight = intField.CalcHeight(GUIContent.none, 1);
+            label.fixedHeight = label.CalcHeight(GUIContent.none, 1);
+            textField.fixedHeight = textField.CalcHeight(GUIContent.none, 1);
+            row.fixedHeight = textField.fixedHeight + textField.margin.vertical;
+        }
+    }
+
+    //
+    //
+    //
+    #endregion
+
     TankScript m_Tank;
 
     #region OnEnable
@@ -12,9 +64,28 @@ public class IMGUIDemoWindow : EditorWindow
     //
     //
 
-    public void OnEnable()
+    void OnEnable()
     {
-        m_Tank = GameObject.FindObjectOfType<TankScript>();
+        m_Tank = FindObjectOfType<TankScript>();
+
+        // IMGUI does not have concept of hovering
+        // you can brute force repainting every Editor update tick as a simple alternative to retaining state information
+        EditorApplication.update += Repaint;
+    }
+
+    //
+    //
+    //
+    #endregion
+
+    #region OnDisable
+    //
+    //
+    //
+
+    void OnDisable()
+    {
+        EditorApplication.update -= Repaint;
     }
 
     //
@@ -38,75 +109,34 @@ public class IMGUIDemoWindow : EditorWindow
     public static void DemoOnGUI(TankScript tank)
     {
         // Save old global state.
-        var oldColor = GUI.backgroundColor;
+        var oldColor = GUI.color;
 
-        // Create row style state for the background color.
-        var background = new Texture2D(1, 1);
-        background.SetPixel(0, 0, new Color(0.18f, 0.28f, 0.18f));
-        background.Apply();
-        var state = new GUIStyleState();
-        state.background = background;
-
-        // Create row style.
-        var rowStyle = new GUIStyle();
-        rowStyle.margin = new RectOffset(0, 0, 6, 6);
-        rowStyle.normal = state;
-
-        // Determine TextField background color from mouse position.
-        var rect = EditorGUILayout.GetControlRect();
-        if (rect.Contains(Event.current.mousePosition))
-        {
-            background.SetPixel(0, 0, Color.yellow);
-            background.Apply();
-            state.background = background;
-        }
-
-        using (var scope = new GUI.GroupScope(rect, rowStyle))
-        {
-            using (var rowScope = new GUILayout.HorizontalScope(rowStyle))
-            {
-                // Create label style from the default skin.
-                var labelStyle = new GUIStyle(GUI.skin.label);
-                labelStyle.fontSize = 20;
-                labelStyle.fontStyle = FontStyle.Bold;
-                labelStyle.fixedHeight = labelStyle.CalcHeight(GUIContent.none, 1);
-
-                // Draw the label.
-                EditorGUILayout.LabelField(
-                    "IMGUI",
-                    labelStyle,
-                    GUILayout.Width(136),
-                    GUILayout.Height(labelStyle.fixedHeight));
-
-                // Set font size and style.
-                var fieldStyle = new GUIStyle(GUI.skin.textField);
-                fieldStyle.fontSize = 20;
-                fieldStyle.fontStyle = FontStyle.Bold;
-                fieldStyle.fixedHeight = fieldStyle.CalcHeight(GUIContent.none, 1);
-
-                // Determine TextField background color from mouse position.
-                var rect2 = EditorGUILayout.GetControlRect(GUILayout.MinWidth(0.0f));
-                rect2.height = fieldStyle.fixedHeight;
-                if (rect2.Contains(Event.current.mousePosition))
-                    GUI.backgroundColor = Color.yellow;
-
-                // Draw TextField
-                tank.tankName =
-                    EditorGUI.TextField(rect, tank.tankName, fieldStyle);
-
-                // Draw IntField
-                GUI.backgroundColor = Color.blue;
-                tank.tankSize =
-                    EditorGUILayout.IntField(
-                        tank.tankSize,
-                        fieldStyle,
-                        GUILayout.Width(94),
-                        GUILayout.Height(fieldStyle.fixedHeight));
-            }
-        }
+        // Determine row background color from mouse position.
+        var rect = GUILayoutUtility.GetRect(GUIContent.none, Styles.row, GUILayout.ExpandWidth(true));
+        GUI.color =
+            rect.Contains(Event.current.mousePosition) ? Styles.rowHoverColor : Styles.rowNormalColor;
+        GUI.Box(rect, GUIContent.none, Styles.row);
 
         // Restore global state.
-        GUI.backgroundColor = oldColor;
+        GUI.color = oldColor;
+
+        // Move layout back up so that next rect will be on top of previous control
+        var marginBetween = Mathf.Lerp(Styles.row.margin.bottom, Styles.textField.margin.top, 0.5f);
+        GUILayout.Space(-Styles.row.fixedHeight - marginBetween);
+
+        using (new EditorGUILayout.HorizontalScope())
+        {
+            // Draw the label.
+            GUILayout.Label("IMGUI", Styles.label);
+
+            // Draw TextField
+            tank.tankName =
+                EditorGUILayout.TextField(tank.tankName, Styles.textField, GUILayout.ExpandWidth(true));
+
+            // Draw IntField
+            tank.tankSize =
+                EditorGUILayout.IntField(tank.tankSize, Styles.intField, GUILayout.Width(Styles.intField.fixedWidth));
+        }
     }
 
     //

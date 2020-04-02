@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
@@ -7,6 +8,7 @@ using UnityEngine.UIElements.StyleSheets;
 public class BasicsDemoWindow : EditorWindow
 {
     TankScript m_Tank;
+    IMGUIContainer m_ImguiContainer;
 
     public void OnEnable()
     {
@@ -192,12 +194,16 @@ public class BasicsDemoWindow : EditorWindow
         //
         //
 
-        var imguiContainer = new IMGUIContainer(() =>
+        m_ImguiContainer = new IMGUIContainer(() =>
         {
             IMGUIDemoWindow.DemoOnGUI(m_Tank);
         });
 
-        root.Add(imguiContainer);
+        root.Add(m_ImguiContainer);
+
+        // IMGUI does not have concept of hovering
+        // you can brute force repainting every Editor update tick as a simple alternative to retaining state information
+        EditorApplication.update += m_ImguiContainer.MarkDirtyRepaint;
 
         //
         //
@@ -223,6 +229,11 @@ public class BasicsDemoWindow : EditorWindow
         root.styleSheets.Add(Resources.Load<StyleSheet>("Basics/fixes"));
         boundVE.styleSheets.Add(Resources.Load<StyleSheet>("Inspector/inspector_styles"));
         #endregion
+    }
+
+    void OnDisable()
+    {
+        EditorApplication.update -= m_ImguiContainer.MarkDirtyRepaint;
     }
 
     #region Show Window
